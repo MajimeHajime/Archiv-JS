@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import '../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useStoreState } from "easy-peasy";
 
 const SideButton= (props) =>{
-    console.log(props)
+    const content = useStoreState((state) => state.dashboardContent)
     const info = props.info
     return(
-        <div className="sideButton" onClick={props.onClick}>
+        <div className={content === info.desc? "sideButton activeButton" :"sideButton"} onClick={props.onClick}>
             <div className="sideIcon">
                 <FontAwesomeIcon icon={info.icon}/>
             </div>

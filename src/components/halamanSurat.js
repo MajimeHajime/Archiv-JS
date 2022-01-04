@@ -3,10 +3,13 @@ import '../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSortAmountDown } from "@fortawesome/free-solid-svg-icons";
 import ListSurat from "./listSurat";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 const HalamanSurat= ({dataSurat, halamanInfo, collumn}) =>{
     const [page, setPage] = useState(1)
     const [entry, setEntry] =useState(4)
+    const content = useStoreState((state) => state.dashboardContent)
+    const setContent = useStoreActions((state) => state.setContent)
     return(
         <>
         <div className="suratContainer">
@@ -43,7 +46,12 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn}) =>{
             {
                 dataSurat.map((data, index)=>{
                     console.log(data)
-                    return <ListSurat info={data}/>
+                    return <ListSurat onClick={
+                        () => {
+                        content === "Halaman Surat" || content == "Detail Rekap" ?
+                        setContent("Detail Surat")
+                        : setContent("Detail Rekap")}
+                    } info={data}/>
                 })
             }
             <div className="footer">

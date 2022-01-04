@@ -71,6 +71,15 @@ body, html, .main{
     transition: 100ms ease;
     white-space: nowrap;
 }
+.sidebarNO{
+    display: flex;
+    flex-direction: column;
+    background-color: #222D32;
+    min-width: 40px;
+    width: 40px;
+    transition: 100ms ease;
+    white-space: nowrap;
+}
 /* .sidebar:active{
     width: 40px;
 } */
@@ -89,6 +98,12 @@ body, html, .main{
 .sideButton:hover{
     border-color: #4f6068;
     cursor: pointer;
+}
+.activeButton{
+    border-color: #006496;
+}
+.activeButton:hover{
+    border-color: #0582CA;
 }
 .sideButton:active{
     transition: none;

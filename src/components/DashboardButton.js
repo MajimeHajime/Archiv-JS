@@ -5,7 +5,7 @@ import "../assets/css/Dashboard.css"
 const DashboardButton = (props) => {
     const info = props.info
     return(
-        <div className="cardOut">
+        <div className="cardOut" onClick={props.onClick}>
             <div className="cardInside">
                 <div className="cardInfo">
                     <p className="cardNumber">

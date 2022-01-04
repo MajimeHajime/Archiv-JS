@@ -3,7 +3,7 @@ import React from "react";
 const ListSurat = (props) => {
     const info = props.info
     return(
-        <div className="listHead listItem">
+        <div className="listHead listItem"  onClick={props.onClick}>
             <div className="penerima">
                 <p>{info.penerima}</p>
             </div>

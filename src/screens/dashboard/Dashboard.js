@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion } from "@fortawesome/free-solid-svg-icons";
+import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion, faUpload, faUserFriends } from "@fortawesome/free-solid-svg-icons";
 
 import SideButton from "../../components/sidebarButtons";
 import ArchV from "../../assets/img/ArchV.png"
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import DetailSurat from "../../components/detailSurat";
 import RekapSurat from "./RekapSurat";
 import {DocumentForm, UserForm} from "../../components/Form";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 const Dashboard = () => {
     const halamanInfo1 = {
@@ -296,27 +297,21 @@ const Dashboard = () => {
             active: false
         },
         {
-            desc: "Debug Detail",
-            icon: faFilePdf,
+            desc: "Upload Surat",
+            icon: faUpload,
             active: false
         },
         {
-            desc: "Debug Rekap",
-            icon: faQuestion,
-            active: false
-        },
-        {
-            desc: "Debug Form Upload",
-            icon: faQuestion,
-            active: false
-        },
-        {
-            desc: "Debug User",
-            icon: faQuestion,
+            desc: "Tambah User",
+            icon: faUserFriends,
             active: false
         }
     ]
-    const [content, setContent] = useState("Dashboard")
+
+    const content = useStoreState((state) => state.dashboardContent)
+    const sidebar = useStoreState((state) => state.sidebar)
+    const setContent = useStoreActions((state) => state.setContent)
+    const setSidebar = useStoreActions((state) => state.setSidebar)
 
     return(
         <div className="main">
@@ -334,9 +329,9 @@ const Dashboard = () => {
 
             </div>
             <div className="body"> 
-                <div className="sidebar">
+                <div className={sidebar ? "sidebar" : "sidebarNO"}>
                     <div className="mainMenu">
-                        <div className="sideMainIcon">
+                        <div className="sideMainIcon" onClick={() => {setSidebar()}}>
                             <FontAwesomeIcon icon={faBars}/>
                         </div>
                         <p>
@@ -357,13 +352,13 @@ const Dashboard = () => {
                     content == "Rekap Surat" ? <>
                         <HalamanSurat dataSurat={dataSurat2} halamanInfo={halamanInfo2} collumn={collumn2}/>
                     </> : 
-                    content == "Debug Detail" ? <DetailSurat/> : 
-                    content == "Debug Rekap" ? <RekapSurat/>: 
-                    content == "Debug Form Upload" ? <DocumentForm type={{
+                    content == "Detail Surat" ? <DetailSurat/> : 
+                    content == "Detail Rekap" ? <RekapSurat/>: 
+                    content == "Upload Surat" ? <DocumentForm type={{
                         title: "Upload"
                     }} />:
-                    content == "Debug User" ? <UserForm type={{
-                        title: "Upload"
+                    content == "Tambah User" ? <UserForm type={{
+                        title: "Tambah User"
                     }} />: <div></div>}
                     <div className="emptySpace"></div>
 
