@@ -5,7 +5,7 @@ const UserForm= ({type}) => {
     
     return(
         <div className="suratContainer">
-            <h className="titleForm">Buat User</h>
+            <h className="titleForm">{type.title}</h>
             <hr/>
             <form
                 className="formArchiv marginForm" onSubmit={(e)=>{

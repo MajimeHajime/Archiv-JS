@@ -1,6 +1,6 @@
 import Login from './screens/auth/LoginScreen';
 import Dashboard from './screens/dashboard/Dashboard';
-import { BrowserRouter as Router, Routes, 
+import { HashRouter as Router, Routes, 
   Route, Navigate} from "react-router-dom";
 import { StoreProvider } from 'easy-peasy';
 import store from './peasy/store';

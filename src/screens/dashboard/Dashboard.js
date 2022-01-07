@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion, faUpload, faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion, faUpload, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 import SideButton from "../../components/sidebarButtons";
 import ArchV from "../../assets/img/ArchV.png"
@@ -12,6 +12,8 @@ import DetailSurat from "../../components/detailSurat";
 import RekapSurat from "./RekapSurat";
 import {DocumentForm, UserForm} from "../../components/Form";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import UserButton from "../../components/UserButton";
+import UserProfile from "../../components/UserProfile";
 
 const Dashboard = () => {
     const halamanInfo1 = {
@@ -280,6 +282,41 @@ const Dashboard = () => {
         }
     ]
 
+    const halamanInfo3 = {
+        title: "List User"
+    }
+    const collumn3 = {
+        penerima: "ID",
+        tanggal: "Username",
+        suratNama: "Email",
+        grade: "Akses",
+        
+    }
+    const dataSurat3 = [
+        {
+            id: 1,
+            status: "Keluar",
+            penerima: "01",
+            tanggal: "admin",
+            document: "emailadmin@gmail.com",
+            link: "#",
+            grade: "4"
+        }
+    ]
+
+    const buttonsAdmin = [
+        {
+            desc: "List User",
+            icon: faUserFriends,
+            active: false
+        },
+        {
+            desc: "Tambah User",
+            icon: faUserPlus,
+            active: false
+        }
+    ]
+
     const buttons = [
         {
             desc: "Dashboard",
@@ -295,30 +332,32 @@ const Dashboard = () => {
             desc: "Rekap Surat",
             icon: faFileAlt,
             active: false
-        },
-        {
-            desc: "Upload Surat",
-            icon: faUpload,
-            active: false
-        },
-        {
-            desc: "Tambah User",
-            icon: faUserFriends,
-            active: false
         }
     ]
 
     const content = useStoreState((state) => state.dashboardContent)
     const sidebar = useStoreState((state) => state.sidebar)
     const setContent = useStoreActions((state) => state.setContent)
+    const authorized = useStoreState((state) => state.authorized)
     const setSidebar = useStoreActions((state) => state.setSidebar)
-
+    authorized ? 
+        buttons.push(
+                
+            {
+                desc: "Upload Surat",
+                icon: faUpload,
+                active: false
+            }
+        ) : console.log("")
     return(
         <div className="main">
             <div className="header">
                 <div>
                     <img className="arch" src={ArchV}/>
                 </div>
+                { authorized ? 
+                <UserButton/>
+                :
                 <Link to="/">
                     <div className="buttonLogin">
                         <p>
@@ -326,6 +365,7 @@ const Dashboard = () => {
                         </p>
                     </div>
                 </Link>
+                }
 
             </div>
             <div className="body"> 
@@ -343,7 +383,23 @@ const Dashboard = () => {
                             console.log(button)
                             return <SideButton info={button} onClick={()=>{setContent(button.desc)}}/>
                         })
-                    }                    
+                    }
+                    {authorized ? 
+                    <>    
+                        <div className="bottomMenu">
+                            <p>
+                                Opsi Admin
+                            </p>
+                            <hr/>
+                        </div>    
+                        {
+                            buttonsAdmin.map((button,index)=>{
+                                console.log(button)
+                                return <SideButton info={button} onClick={()=>{setContent(button.desc)}}/>
+                            })
+                        }               
+                    </>
+                    : console.log("")}
                 </div>
                 <div className="content">
                     <p className="pageName">{content}</p>
@@ -359,7 +415,12 @@ const Dashboard = () => {
                     }} />:
                     content == "Tambah User" ? <UserForm type={{
                         title: "Tambah User"
-                    }} />: <div></div>}
+                    }} />: 
+                    content == "List User" ? <HalamanSurat dataSurat={dataSurat3} halamanInfo={halamanInfo3} collumn={collumn3}/> :
+                    content == "User Profile" ? <UserProfile/> : 
+                    content == "Edit User" ? <UserForm type={{
+                        title: "Edit User"
+                    }} /> :<div></div>}
                     <div className="emptySpace"></div>
 
                 </div>

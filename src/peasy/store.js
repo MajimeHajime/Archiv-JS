@@ -17,6 +17,10 @@ const store = createStore({
     detailDocument: "",
     setDetailDocument: action((state, payload) => {
         state.detailDocument = payload;
+    }),
+    authorized: false,
+    setAuthorized: action((state,payload) => {
+      state.authorized = payload;
     })
   });
 

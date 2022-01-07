@@ -1,11 +1,14 @@
+import { useStoreActions } from "easy-peasy";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '../../assets/css/Login.css'
 import loginImage from '../../assets/img/login2.png'
 
 const Login = () => {
     const [uname, setName] = useState("")
     const [pass, setPass] = useState("")
+    const setAuthorized = useStoreActions((state) => state.setAuthorized)
+    let navigate  = useNavigate();
     return(
         <div className="center">
             <div className="card">
@@ -18,9 +21,13 @@ const Login = () => {
                         </div>
                         <div>
                             <form className="login" onSubmit={(e)=>{
-                                e.preventDefault()
-                                console.log(uname)
-                                console.log(pass)
+                                    e.preventDefault()
+                                    console.log(uname)
+                                    console.log(pass)
+                                
+                                    setAuthorized(true)
+                                    navigate("/dashboard");
+                                
                                 }}>
                                 <label htmlFor="email">Username</label><br/>
                                 <input className="login" type="text" id="uname" name="uname" onChange={(e)=>setName(e.target.value)} required></input><br/><br/>
