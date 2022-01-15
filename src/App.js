@@ -28,7 +28,8 @@ function App() {
         <StoreProvider store={store}>
           <Router>
             <Routes>
-              <Route exact path="/*" element={<Dashboard/>}>
+              <Route exact path = "/" element={<Navigate to="/main/dashboard"/>}/>
+              <Route exact path="/main/*" element={<Dashboard/>}>
                 <Route path="dashboard" element={<DashboardPage/>}/>
                 <Route path="surat/*" element={<SuratContainer/>}>
                   <Route path="list" element={<HalamanSurat2/>}/>

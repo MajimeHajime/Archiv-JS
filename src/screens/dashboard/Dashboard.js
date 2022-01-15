@@ -24,13 +24,13 @@ const Dashboard = () => {
             desc: "List User",
             icon: faUserFriends,
             active: false,
-            link: "/user/list"
+            link: "user/list"
         },
         {
             desc: "Tambah User",
             icon: faUserPlus,
             active: false,
-            link: "/adduser"
+            link: "adduser"
         }
     ]
 
@@ -39,19 +39,19 @@ const Dashboard = () => {
             desc: "Dashboard",
             icon: faColumns,
             active: false,
-            link: "/dashboard"
+            link: "dashboard"
         },
         {
             desc: "Halaman Surat",
             icon: faEnvelope,
             active: false,
-            link: "/surat/list"
+            link: "surat/list"
         },
         {
             desc: "Rekap Surat",
             icon: faFileAlt,
             active: false,
-            link: "/rekap/list"
+            link: "rekap/list"
         }
     ]
 
@@ -67,7 +67,7 @@ const Dashboard = () => {
                 desc: "Input Surat",
                 icon: faUpload,
                 active: false,
-                link: "/upload"
+                link: "upload"
             }
         ) : console.log("")
     return(

@@ -7,7 +7,7 @@ const HalamanSurat2 = () => {
         title: "Halaman Surat"
     }
     const collumn2 = {
-        penerima: "Penerima",
+        penerima: "No. Surat",
         tanggal: "Tanggal",
         suratNama: "Surat",
         grade: "Grade",

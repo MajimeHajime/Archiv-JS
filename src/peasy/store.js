@@ -47,7 +47,7 @@ const store = createStore(
           {
               id: 1,
               status: "Keluar",
-              penerima: "Orang tua siswa",
+              penerima: "AS/21",
               tanggal: "2021-06-08 13:10:14",
               document: "Surat pemberitahuan pembagian rapot.PDF",
               link: "#",
@@ -56,7 +56,7 @@ const store = createStore(
           {
               id: 2,
               status: "Keluar",
-              penerima: "PT Inovindo Digital Media",
+              penerima: "FAS/124",
               tanggal: "2021-03-21 15:16:11",
               document: "Pengajuan peserta prakerin 2021.PDF",
               link: "#",
@@ -65,7 +65,7 @@ const store = createStore(
           {
               id: 3,
               status: "Keluar",
-              penerima: "Universitas ITB",
+              penerima: "1asfA",
               tanggal: "2021-03-13 17:14:13",
               document: "Pengumuman penerimaan PPL.PDF",
               link: "#",
@@ -74,7 +74,7 @@ const store = createStore(
           {
               id: 4,
               status: "Keluar",
-              penerima: "Polrestabes Bandung",
+              penerima: "ASda/12",
               tanggal: "2021-08-30 09:01:10",
               document: "Daftar siswa peserta prakerin 2021.PDF",
               link: "#",
@@ -87,7 +87,7 @@ const store = createStore(
         {
             id: 1,
             status: "Masuk",
-            penerima: "Hubin",
+            penerima: "IS/12",
             tanggal: "2021-06-08 13:10:14",
             document: "Pengesahan.PDF",
             link: "#",
@@ -96,7 +96,7 @@ const store = createStore(
         {
             id: 2,
             status: "Masuk",
-            penerima: "TU",
+            penerima: "00/102",
             tanggal: "2021-03-21 15:16:11",
             document: "Permintaan.PDF",
             link: "#",
@@ -105,7 +105,7 @@ const store = createStore(
         {
             id: 3,
             status: "Masuk",
-            penerima: "HUBIN",
+            penerima: "00/12",
             tanggal: "2021-03-13 17:14:13",
             document: "Notice.PDF",
             link: "#",
@@ -114,7 +114,7 @@ const store = createStore(
         {
             id: 4,
             status: "Masuk",
-            penerima: "HUBIN",
+            penerima: "00/412",
             tanggal: "2021-08-30 09:01:10",
             document: "Permintaan List Siswa PKL.pdf",
             link: "#",
