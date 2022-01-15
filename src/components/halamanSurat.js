@@ -4,21 +4,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSortAmountDown } from "@fortawesome/free-solid-svg-icons";
 import ListSurat from "./listSurat";
 import { useStoreActions, useStoreState } from "easy-peasy";
+import { useNavigate } from "react-router-dom";
 
-const HalamanSurat= ({dataSurat, halamanInfo, collumn}) =>{
+const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const [page, setPage] = useState(1)
     const [entry, setEntry] =useState(4)
     const content = useStoreState((state) => state.dashboardContent)
+    const dataLoading = useStoreState((state) => state.dataLoading)
     const setContent = useStoreActions((state) => state.setContent)
+    const setKm = useStoreActions((state) => state.setKm)
+    const km = useStoreState((state) => state.km)
+    let navigate  = useNavigate();
+
     return(
         <>
         <div className="suratContainer">
             <div className="up">
                 <p className="suratHeading">{halamanInfo.title}</p>
-                <select className="masuk_keluar" name="type" id="type">
+                {type === "surat" ?
+                <select onChange={(value) => setKm(value.target.value)} className="masuk_keluar" name="type" id="type">
                     <option value="keluar">Keluar</option>
                     <option value="masuk">Masuk</option>
                 </select>
+                : <></>
+                }
             </div>
             <div className="suratEntry">
                 <p>Show </p>
@@ -44,18 +53,36 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn}) =>{
                 </div>
             </div>
             {
-                dataSurat.map((data, index)=>{
-                    console.log(data)
+                dataLoading 
+                ? 
+                <>
+                <div className="line shine"></div>
+                <div className="line shine"></div>
+                <div className="line shine"></div>
+                <div className="line shine"></div>
+                </>
+                :
+                type === "surat" ?
+                km === "keluar" ?
+                dataSurat.keluar.map((data, index)=>{
                     return <ListSurat onClick={
-                        () => {
-                        content === "Halaman Surat" || content == "Detail Rekap" ?
-                        setContent("Detail Surat")
-                        : setContent("Detail Rekap")}
+                        () => navigate("../detail")
+                    } info={data}/>
+                })
+                :
+                dataSurat.masuk.map((data, index)=>{
+                    return <ListSurat onClick={
+                        () => navigate("../detail")
+                    } info={data}/>
+                }) :
+                dataRekap.map((data, index)=>{
+                    return <ListSurat onClick={
+                        () => {type === "user" ? navigate("../edit") : navigate("../detail")}
                     } info={data}/>
                 })
             }
             <div className="footer">
-                <p>Showing 1 to {entry} of {dataSurat.length} entries</p>
+                <p>Showing 1 to {entry} of {type === "surat" ? km === "keluar" ?dataSurat.keluar.length : dataSurat.masuk.length : dataRekap.length} entries</p>
                 <div className="pagination">
                     <div onClick={
                         () => {

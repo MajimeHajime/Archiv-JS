@@ -11,7 +11,7 @@ const RekapSurat = () => {
         suratNama: "Surat",
         grade: "Grade",
     }
-    const dataSurat2 = [
+    const dataRekap2 = [
         {
             id: 1,
             status: "Masuk",
@@ -24,8 +24,8 @@ const RekapSurat = () => {
     ]
     return(
         <>
-            <HalamanSurat dataSurat={dataSurat2} halamanInfo={halamanInfo2} collumn={collumn2}/>
-            <HalamanSurat dataSurat={dataSurat2} halamanInfo={halamanInfo2} collumn={collumn2}/>
+            <HalamanSurat dataRekap={dataRekap2} halamanInfo={halamanInfo2} collumn={collumn2}/>
+            <HalamanSurat dataRekap={dataRekap2} halamanInfo={halamanInfo2} collumn={collumn2}/>
             <div className="emptySpace"></div>
         </>
     )

@@ -27,14 +27,14 @@ const UserButton = () => {
                 </div>
             </div>
             <div className='dropdown-content'>
-                <div className='userButtonsContainer' onClick={()=>{setContent("User Profile")}}>
+                <div className='userButtonsContainer' onClick={()=>{navigate("profile")}}>
                     <div className='fuckPMargin buttonsUser'>
                         <FontAwesomeIcon icon={faUser}/>
                         <p>Profile</p>
                     </div>
                 </div>
                 <div className='userButtonsContainer' onClick={()=>{
-                    navigate("/")
+                    navigate("/login")
                     setAuthorized(false)
                 }}>
                     <div className='fuckPMargin buttonsUser'>

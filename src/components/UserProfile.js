@@ -4,9 +4,11 @@ import React from 'react'
 import pfp from '../assets/img/pfp.jpg'
 import '../assets/css/Dashboard.css'
 import { useStoreActions } from 'easy-peasy'
+import { useNavigate } from 'react-router-dom'
 
 const UserProfile = () => {
     const setContent = useStoreActions((state) => state.setContent)
+    let navigate = useNavigate()
 
     return(
         <div className='suratContainer'>
@@ -26,7 +28,7 @@ const UserProfile = () => {
                 <div className='informationUser ratioUser1'>
                     <div className='flexBetween'>
                         <p className='userHeader'>Profile Details</p> 
-                        <div onClick={()=>setContent("Edit User")} className='pointerCursor editButton'>
+                        <div onClick={()=>navigate("../user/edit")} className='pointerCursor editButton'>
                             <FontAwesomeIcon icon={faEdit}/>
                         </div>
                     </div>
