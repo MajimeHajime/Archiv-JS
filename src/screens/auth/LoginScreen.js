@@ -26,7 +26,7 @@ const Login = () => {
                                     console.log(pass)
                                 
                                     setAuthorized(true)
-                                    navigate("/dashboard");
+                                    navigate("/main/dashboard");
                                 
                                 }}>
                                 <label htmlFor="email">Username</label><br/>
@@ -34,7 +34,7 @@ const Login = () => {
                                 <label htmlFor="email">Password</label><br/>
                                 <input className="login" type="password" id="password" name="password"  onChange={(e)=>setPass(e.target.value)} required></input><br/><br/>
                                 <input type="submit" value="LOGIN" />
-                                <Link to="/dashboard">
+                                <Link to="/main/dashboard">
                                 <input  className="login" type="button" value="Guest"/>
                                 </Link>
 

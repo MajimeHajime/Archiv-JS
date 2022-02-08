@@ -110,16 +110,6 @@ const DocumentForm= ({type}) => {
                 <input className="formArchiv" type="text"></input><br/>
                 <label className="formArchiv">Tanggal Akuisisi</label><br/>
                 <input className="formArchiv" type="date"></input><br/>
-                <label className="formArchiv">Pendonor</label><br/>
-                <input className="formArchiv" type="text"></input><br/>
-                <label className="formArchiv">Tanggal Donor</label><br/>
-                <input className="formArchiv" type="date"></input><br/>
-                <label className="formArchiv">Nomor Akuisisi</label><br/>
-                <input className="formArchiv" type="number"></input><br/>
-                <label className="formArchiv">Area Pendonor</label><br/>
-                <input className="formArchiv" type="text"></input><br/>
-                <label className="formArchiv">Area Pemegang Hak</label><br/>
-                <input className="formArchiv" type="text"></input><br/>
             </form>
         </div>
         
