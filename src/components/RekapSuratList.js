@@ -24,7 +24,7 @@ const RekapSuratList = () => {
     ]
     return(
         <>
-            <HalamanSurat dataRekap={dataRekap} halamanInfo={halamanInfo2} collumn={collumn2}/>
+            <HalamanSurat type={"surat"} dataRekap={dataRekap} halamanInfo={halamanInfo2} collumn={collumn2}/>
             <div className="emptySpace"></div>
         </>
     )

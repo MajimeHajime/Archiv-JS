@@ -1,4 +1,5 @@
 import React from "react";
+import { truncateString } from "../modules/modulesCustom";
 
 const ListSurat = (props) => {
     const info = props.info
@@ -11,7 +12,7 @@ const ListSurat = (props) => {
                 <p>{info.tanggal}</p>
             </div>
             <div className="suratName">
-                <p>{info.document}</p>
+                <p>{truncateString(info.document, 45)}</p>
             </div>
             <div className="securityGrade">
                 <p>{info.grade}</p>

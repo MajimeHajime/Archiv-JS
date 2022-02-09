@@ -44,82 +44,12 @@ const store = createStore(
     {
       keluar:
         [
-          {
-              id: 1,
-              status: "Keluar",
-              penerima: "AS/21",
-              tanggal: "2021-06-08 13:10:14",
-              document: "Surat pemberitahuan pembagian rapot.PDF",
-              link: "#",
-              grade: "Classified"
-          },
-          {
-              id: 2,
-              status: "Keluar",
-              penerima: "FAS/124",
-              tanggal: "2021-03-21 15:16:11",
-              document: "Pengajuan peserta prakerin 2021.PDF",
-              link: "#",
-              grade: "Non Public"
-          },
-          {
-              id: 3,
-              status: "Keluar",
-              penerima: "1asfA",
-              tanggal: "2021-03-13 17:14:13",
-              document: "Pengumuman penerimaan PPL.PDF",
-              link: "#",
-              grade: "Classified"
-          },
-          {
-              id: 4,
-              status: "Keluar",
-              penerima: "ASda/12",
-              tanggal: "2021-08-30 09:01:10",
-              document: "Daftar siswa peserta prakerin 2021.PDF",
-              link: "#",
-              grade: "Classified"
-          }
+          
         ],
       masuk: 
     
       [
-        {
-            id: 1,
-            status: "Masuk",
-            penerima: "IS/12",
-            tanggal: "2021-06-08 13:10:14",
-            document: "Pengesahan.PDF",
-            link: "#",
-            grade: "Classified"
-        },
-        {
-            id: 2,
-            status: "Masuk",
-            penerima: "00/102",
-            tanggal: "2021-03-21 15:16:11",
-            document: "Permintaan.PDF",
-            link: "#",
-            grade: "Non Public"
-        },
-        {
-            id: 3,
-            status: "Masuk",
-            penerima: "00/12",
-            tanggal: "2021-03-13 17:14:13",
-            document: "Notice.PDF",
-            link: "#",
-            grade: "Classified"
-        },
-        {
-            id: 4,
-            status: "Masuk",
-            penerima: "00/412",
-            tanggal: "2021-08-30 09:01:10",
-            document: "Permintaan List Siswa PKL.pdf",
-            link: "#",
-            grade: "Classified"
-        }
+        
       ],
     
 
@@ -132,7 +62,7 @@ const store = createStore(
     setSataSuratKeluar: action((state, payload) => {
       state.dataSurat.keluar = payload;
     }),
-    km: "keluar",
+    km: "masuk",
     setKm: action((state,payload) => {
       state.km = payload
     })

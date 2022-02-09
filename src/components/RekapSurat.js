@@ -1,7 +1,7 @@
 import React from "react";
 import HalamanSurat from "./halamanSurat";
 
-const RekapSuratList = () => {
+const RekapSurat = () => {
     const halamanInfo2 = {
         title: "Rekap Surat"
     }
@@ -16,17 +16,18 @@ const RekapSuratList = () => {
             id: 1,
             status: "Masuk",
             penerima: "Guru",
-            tanggal: "30-05-2004",
-            document: "Catcher In the Rye.pdf",
+            tanggal: "10",
+            document: "3",
             link: "#",
-            grade: "Public"
+            grade: "7"
         }
     ]
     return(
         <>
             <HalamanSurat dataRekap={dataRekap} halamanInfo={halamanInfo2} collumn={collumn2}/>
             <div className="emptySpace"></div>
+            
         </>
     )
 }
-export default RekapSuratList;
+export default RekapSurat;

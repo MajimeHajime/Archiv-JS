@@ -1,33 +1,32 @@
 import React from "react";
 import HalamanSurat from "../../components/halamanSurat";
 
-const RekapSurat = () => {
+const RekapSuratList = () => {
     const halamanInfo2 = {
-        title: "Surat Masuk"
+        title: "Rekap Surat"
     }
     const collumn2 = {
-        penerima: "Penerima",
-        tanggal: "Tanggal",
-        suratNama: "Surat",
-        grade: "Grade",
+        penerima: "Pemegang Hak",
+        tanggal: "Jumlah",
+        suratNama: "Keluar",
+        grade: "Masuk",
     }
-    const dataRekap2 = [
+    const dataRekap = [
         {
             id: 1,
             status: "Masuk",
             penerima: "Guru",
-            tanggal: "30-05-2004",
-            document: "Catcher In the Rye.pdf",
+            tanggal: "10",
+            document: "3",
             link: "#",
-            grade: "Public"
+            grade: "7"
         }
     ]
     return(
         <>
-            <HalamanSurat dataRekap={dataRekap2} halamanInfo={halamanInfo2} collumn={collumn2}/>
-            <HalamanSurat dataRekap={dataRekap2} halamanInfo={halamanInfo2} collumn={collumn2}/>
+            <HalamanSurat dataRekap={dataRekap} halamanInfo={halamanInfo2} collumn={collumn2}/>
             <div className="emptySpace"></div>
+            
         </>
     )
 }
-export default RekapSurat;

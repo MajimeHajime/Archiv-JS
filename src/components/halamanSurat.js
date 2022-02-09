@@ -5,6 +5,8 @@ import { faSortAmountDown } from "@fortawesome/free-solid-svg-icons";
 import ListSurat from "./listSurat";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useNavigate } from "react-router-dom";
+import { getRequest, getSurat } from "../peasy/api";
+import Loading from "./Loading";
 
 const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const [page, setPage] = useState(1)
@@ -12,8 +14,12 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const content = useStoreState((state) => state.dashboardContent)
     const dataLoading = useStoreState((state) => state.dataLoading)
     const setContent = useStoreActions((state) => state.setContent)
+    const setDataLoading = useStoreActions((state) => state.setDataLoading)
+
     const setKm = useStoreActions((state) => state.setKm)
     const km = useStoreState((state) => state.km)
+    const setSataSuratMasuk = useStoreActions((state) => state.setSataSuratMasuk)
+
     let navigate  = useNavigate();
 
     return(
@@ -23,11 +29,13 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 <p className="suratHeading">{halamanInfo.title}</p>
                 {type === "surat" ?
                 <select onChange={(value) => setKm(value.target.value)} className="masuk_keluar" name="type" id="type">
-                    <option value="keluar">Keluar</option>
                     <option value="masuk">Masuk</option>
+                    <option value="keluar">Keluar</option>
                 </select>
+                
                 : <></>
                 }
+                
             </div>
             <div className="suratEntry">
                 <p>Show </p>
@@ -64,17 +72,34 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 :
                 type === "surat" ?
                 km === "keluar" ?
+                dataSurat.keluar.length > 0 ?
                 dataSurat.keluar.map((data, index)=>{
                     return <ListSurat onClick={
                         () => navigate("../detail")
-                    } info={data}/>
+                    } info={{
+                    penerima: data.nomor_surat || "",
+                    tanggal: data.updated_at || "",
+                    document: data.nama_file || "",
+                    link: "#",
+                    grade: data.access_level || "Public"}}/>
                 })
                 :
+                <></>
+                :
+                dataSurat.masuk.length > 0 ?
                 dataSurat.masuk.map((data, index)=>{
                     return <ListSurat onClick={
                         () => navigate("../detail")
-                    } info={data}/>
-                }) :
+                    } info={{
+                        penerima: data.nomor_surat || "",
+                        tanggal: data.updated_at || "",
+                        document: data.nama_file || "",
+                        link: "#",
+                        grade: data.access_level || "Public"}}/>
+                }) 
+                :
+                <></>
+                :
                 dataRekap.map((data, index)=>{
                     return <ListSurat onClick={
                         () => {type === "user" ? navigate("../edit") : navigate("../detail")}
@@ -83,6 +108,18 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
             }
             <div className="footer">
                 <p>Showing 1 to {entry} of {type === "surat" ? km === "keluar" ?dataSurat.keluar.length : dataSurat.masuk.length : dataRekap.length} entries</p>
+                
+                <div className="button" onClick={() =>{
+                    setDataLoading(true)
+                    getRequest().then(
+                        data => {
+                            setSataSuratMasuk(data.data);
+                            setDataLoading(false);}
+                    )
+                        
+                    }}>
+                    Update
+                </div>
                 <div className="pagination">
                     <div onClick={
                         () => {

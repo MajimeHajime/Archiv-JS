@@ -16,8 +16,6 @@ import UserButton from "../../components/UserButton";
 import UserProfile from "../../components/UserProfile";
 
 const Dashboard = () => {
-   
-
 
     const buttonsAdmin = [
         {
@@ -117,7 +115,9 @@ const Dashboard = () => {
                         {
                             buttonsAdmin.map((button,index)=>{
                                 console.log(button)
-                                return <SideButton link={button.link} info={button} onClick={()=>{setContent(button.desc)}}/>
+                                return <SideButton link={button.link} info={button} onClick={()=>{
+                                    setContent(button.desc);
+                                }}/>
                             })
                         }               
                     </>

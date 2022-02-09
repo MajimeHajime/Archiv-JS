@@ -6,7 +6,6 @@ import { StoreProvider } from 'easy-peasy';
 import store from './peasy/store';
 import DashboardPage from './components/DashboardPage';
 import HalamanSurat from './components/halamanSurat';
-import RekapSurat from './screens/dashboard/RekapSurat';
 import { DocumentForm } from './components/Form';
 import UserProfile from './components/UserProfile';
 import HalamanSurat2 from './components/HalamanSurat2';
@@ -19,6 +18,7 @@ import UserList from './components/UserList';
 import AddUser from './components/AddUser';
 import DetailSurat from './components/detailSurat';
 import EditUser from './components/EditUser';
+import RekapSurat from './components/RekapSurat';
 
 
 
@@ -37,8 +37,8 @@ function App() {
                   <Route path="detail" element={<DetailSurat/>}/>
                 </Route>
                 <Route path="rekap/*" element={<RekapContainer/>}>
-                  <Route path="list" element={<RekapSuratList/>}/>
-                  <Route path="detail" element={<RekapSurat/>}/>
+                  <Route path="list" element={<RekapSurat/>}/>
+                  <Route path="detail" element={<HalamanSurat2/>}/>
                 </Route>
                 <Route path="upload" element={<InputSurat/>}/>
                 <Route path="profile" element={<UserProfile/>} />
