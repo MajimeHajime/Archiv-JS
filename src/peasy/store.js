@@ -65,6 +65,10 @@ const store = createStore(
     km: "masuk",
     setKm: action((state,payload) => {
       state.km = payload
+    }),
+    detail: {},
+    setDetail: action((state,payload) => {
+      state.detail = payload
     })
    
   },

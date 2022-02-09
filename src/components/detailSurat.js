@@ -2,9 +2,13 @@ import React, {useState} from "react";
 import '../assets/css/Dashboard.css';
 import {faDownload, faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useStoreState } from "easy-peasy";
+import { truncateString } from "../modules/modulesCustom";
 
 
 const DetailSurat = () => {
+    const detail = useStoreState((state) => state.detail)
+    console.log(detail)
     return(
         <>
             <div className="detailContainer">
@@ -16,7 +20,7 @@ const DetailSurat = () => {
                     <h className="titleDetail">Detail</h>
                     <div className="detailContainer2">          
                         <div className="disposisi">
-                            <p>Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum</p>
+                            <p>{detail.disposisi ? detail.disposisi : ""}</p>
                         </div>
                         <div className="leftSideContainer">
                         <div className="informationDetail">
@@ -25,8 +29,8 @@ const DetailSurat = () => {
                                         <FontAwesomeIcon icon={faFilePdf}/>
                                     </div>
                                     <div>
-                                        <h>Iliad - The Epic of Homer.pdf</h>
-                                        <p className="fileSize">35MB</p>
+                                        <h>{detail.nama_surat}</h>
+                                        <p className="fileSize">{detail.nama_file}</p>
                                     </div>
                                 </div>
                                 <div className="detailButtonContainer">
@@ -54,7 +58,11 @@ const DetailSurat = () => {
                                         Retensi
                                     </h>
                                     <p>
-                                        Nilai Kembali
+                                        {detail.jenis_retensi ? 
+                                            detail.jenis_retensi == 2 ? "Nilai Kembail" :
+                                            detail.jenis_retensi == 1 ? "Musnah" :
+                                            detail.jenis_retensi == 3 ? "Permanen" :
+                                         "" : ""}
                                     </p>
                                     <p>
                                         30 Mei 2022

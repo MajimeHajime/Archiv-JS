@@ -5,7 +5,7 @@ import { faSortAmountDown } from "@fortawesome/free-solid-svg-icons";
 import ListSurat from "./listSurat";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { useNavigate } from "react-router-dom";
-import { getRequest, getSurat } from "../peasy/api";
+import { getDetail, getPost, getRequest, getSurat } from "../peasy/api";
 import Loading from "./Loading";
 
 const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
@@ -15,6 +15,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const dataLoading = useStoreState((state) => state.dataLoading)
     const setContent = useStoreActions((state) => state.setContent)
     const setDataLoading = useStoreActions((state) => state.setDataLoading)
+    const setDetail = useStoreActions((state) => state.setDetail)
 
     const setKm = useStoreActions((state) => state.setKm)
     const km = useStoreState((state) => state.km)
@@ -28,7 +29,17 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
             <div className="up">
                 <p className="suratHeading">{halamanInfo.title}</p>
                 {type === "surat" ?
-                <select onChange={(value) => setKm(value.target.value)} className="masuk_keluar" name="type" id="type">
+                <select onChange={(value) => {
+                    setKm(value.target.value)
+                    setDataLoading(true)
+                    getRequest(
+                        value.target.value == "masuk" ? 2 : 1
+                    ).then(
+                        data => {
+                            setSataSuratMasuk(data.data);
+                            setDataLoading(false);}
+                    )
+                    }} className="masuk_keluar" name="type" id="type">
                     <option value="masuk">Masuk</option>
                     <option value="keluar">Keluar</option>
                 </select>
@@ -72,10 +83,13 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 :
                 type === "surat" ?
                 km === "keluar" ?
-                dataSurat.keluar.length > 0 ?
-                dataSurat.keluar.map((data, index)=>{
+                dataSurat.masuk.length > 0 ?
+                dataSurat.masuk.map((data, index)=>{
                     return <ListSurat onClick={
-                        () => navigate("../detail")
+                        e => {
+                            console.log(data.id)
+                            getDetail(data.id).then(data=> setDetail(data.data)).then(() => navigate("../detail"))
+                        }
                     } info={{
                     penerima: data.nomor_surat || "",
                     tanggal: data.updated_at || "",
@@ -89,7 +103,10 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 dataSurat.masuk.length > 0 ?
                 dataSurat.masuk.map((data, index)=>{
                     return <ListSurat onClick={
-                        () => navigate("../detail")
+                        e => {
+                            console.log(data.id)
+                            getDetail(data.id).then(data=> setDetail(data.data)).then(() => navigate("../detail"))
+                        }
                     } info={{
                         penerima: data.nomor_surat || "",
                         tanggal: data.updated_at || "",
@@ -111,13 +128,16 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 
                 <div className="button" onClick={() =>{
                     setDataLoading(true)
-                    getRequest().then(
+                    getRequest(
+                        km == "masuk" ? 2 : 1
+                    ).then(
                         data => {
                             setSataSuratMasuk(data.data);
                             setDataLoading(false);}
                     )
                         
-                    }}>
+                    }}
+                    >
                     Update
                 </div>
                 <div className="pagination">
