@@ -57,6 +57,8 @@ const Dashboard = () => {
     const sidebar = useStoreState((state) => state.sidebar)
     const setContent = useStoreActions((state) => state.setContent)
     const authorized = useStoreState((state) => state.authorized)
+    const userData = useStoreState((state) => state.userData)
+
     const setSidebar = useStoreActions((state) => state.setSidebar)
     authorized ? 
         buttons.push(
@@ -69,29 +71,12 @@ const Dashboard = () => {
             }
         ) : console.log("")
     return(
-        <div className="main">
-            <div className="header">
-                <div>
-                    <img className="arch" src={ArchV}/>
-                </div>
-                { authorized ?
-                // console.log("") 
-                <UserButton/>
-                :
-                <Link to="/login">
-                    <div className="buttonLogin">
-                        <p>
-                            Log In
-                        </p>
-                    </div>
-                </Link>
-                }
-
-            </div>
-            <div className="body"> 
-                <div className={sidebar ? "sidebar" : "sidebarNO"}>
+        <div className="body">
+            <div className={sidebar ? "sidebar" : "sidebarNO"}>
                     <div className="mainMenu">
-                        <div className="sideMainIcon" onClick={() => {setSidebar()}}>
+                        <div className="sideMainIcon" onClick={() => {
+                            console.log(sidebar)
+                            setSidebar()}}>
                             <FontAwesomeIcon icon={faBars}/>
                         </div>
                         <p>
@@ -104,7 +89,7 @@ const Dashboard = () => {
                             return <SideButton link={button.link} info={button} onClick={()=>{setContent(button.desc)}}/>
                         })
                     }
-                    {authorized ? 
+                    { userData.username == "admin" ? 
                     <>    
                         <div className="bottomMenu">
                             <p>
@@ -122,7 +107,27 @@ const Dashboard = () => {
                         }               
                     </>
                     : console.log("")}
+            </div>
+            <div className="main"> 
+                <div className="header">
+                    <div>
+                        <img className="arch" src={ArchV}/>
+                    </div>
+                    { authorized ?
+                    // console.log("") 
+                    <UserButton/>
+                    :
+                    <Link to="/login">
+                        <div className="buttonLogin">
+                            <p>
+                                Log In
+                            </p>
+                        </div>
+                    </Link>
+                    }
+
                 </div>
+                
                 <div className="content">
                     {/* <p className="pageName">{content}</p> */}
                     <Outlet/>

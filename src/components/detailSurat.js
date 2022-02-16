@@ -50,7 +50,11 @@ const DetailSurat = () => {
                                         Access Level
                                     </h>
                                     <p>
-                                        Public
+                                        {detail.access_level ? 
+                                            detail.access_level == 2 ? "Rahasia" :
+                                            detail.access_level == 1 ? "Terbatas" :
+                                            detail.access_level == 0 ? "Publik" :
+                                         "" : ""}
                                     </p>
                                 </div>
                                 <div className="infoStyle">
@@ -65,7 +69,7 @@ const DetailSurat = () => {
                                          "" : ""}
                                     </p>
                                     <p>
-                                        30 Mei 2022
+                                        {detail.tanggal_retensi || ""}
                                     </p>
 
                                 </div>
@@ -75,8 +79,9 @@ const DetailSurat = () => {
                         
                         
                     </div>
-                    <div className="bottomDetail">
-                        <p>Diterima pada 10 Mei 2003 oleh Hubin</p>
+                    <div className="fuckPMargin bottomDetail">
+                        <p>Dikirim oleh {detail.pengirim} dan diterima pada pada {detail.tanggal_akuisisi || detail.created_at} oleh {detail.penerima}</p>
+                        
                     </div>
                 </div>
             </div>

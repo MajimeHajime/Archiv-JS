@@ -30,17 +30,36 @@ const DashboardPage = () => {
             link: "Rekap Surat",
             number: "2",
             go: "../rekap/list"
+        },
+        {
+            icon: faFileAlt,
+            desc: "Rekap surat",
+            link: "Rekap Surat",
+            number: "2",
+            go: "../rekap/list"
         }
     ]
     return(
-        <div className="buttonContainer">
-            {dashboardData.map((data, index)=>{
-                console.log(data)
-                return <DashboardButton onClick={() => {
-                    setContent(data.link) 
-                    navigate(data.go)}} info={data}/>
-            })}
-        </div>
+        <>
+            <div className="bannerNotification">
+            </div>    
+            <div className="buttonContainer">
+                {dashboardData.map((data, index)=>{
+                    console.log(data)
+                    return <DashboardButton onClick={() => {
+                        setContent(data.link) 
+                        navigate(data.go)}} info={data}/>
+                })}
+            </div>
+            <div className="dashboardSplit">
+                <div className="suratContainer">
+                    a
+                </div>
+                <div className="suratContainer">
+                    a
+                </div>
+            </div>
+        </>
     )
 }
 export default DashboardPage

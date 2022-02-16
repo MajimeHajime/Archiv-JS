@@ -3,12 +3,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import pfp from '../assets/img/pfp.jpg'
 import '../assets/css/Dashboard.css'
-import { useStoreActions } from 'easy-peasy'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useNavigate } from 'react-router-dom'
 
 const UserProfile = () => {
     const setContent = useStoreActions((state) => state.setContent)
     let navigate = useNavigate()
+    const userData = useStoreState((state)=> state.userData)
 
     return(
         <div className='suratContainer'>
@@ -17,11 +18,11 @@ const UserProfile = () => {
                     <div className='infoText fuckPMargin centeringUser'>
                         <img src={pfp} className='userPict'/>
                         <p>
-                            Admin
+                            {userData.name}
                         </p>
                         <hr/>
                         <p>
-                            4: Administrator
+                            Hak akses : {userData.access_levels}
                         </p>
                     </div>
                 </div>
@@ -41,7 +42,7 @@ const UserProfile = () => {
                                 <p>:</p>
                             </div>
                             <div className='ratioText3 fuckPMargin infoText'>
-                                <p>Nama Admin</p>
+                                <p>{userData.name}</p>
                             </div>
                         </div>
                         <div className='infoTextContainer'>
@@ -52,7 +53,7 @@ const UserProfile = () => {
                                 <p>:</p>
                             </div>
                             <div className='ratioText3 fuckPMargin infoText'>
-                                <p>02</p>
+                                <p>{userData.id}</p>
                             </div>
                         </div>
                         <div className='infoTextContainer'>
@@ -63,7 +64,7 @@ const UserProfile = () => {
                                 <p>:</p>
                             </div>
                             <div className='ratioText3 fuckPMargin infoText'>
-                                <p>Admin</p>
+                                <p>{userData.username}</p>
                             </div>
                         </div>
                         <div className='infoTextContainer'>
@@ -74,20 +75,10 @@ const UserProfile = () => {
                                 <p>:</p>
                             </div>
                             <div className='ratioText3 fuckPMargin infoText'>
-                                <p>emailadmin@gmail.com</p>
+                                <p>{userData.email}</p>
                             </div>
                         </div>
-                        <div className='infoTextContainer'>
-                            <div className='ratioText1 fuckPMargin infoText'>
-                                <p>Password</p>
-                            </div>
-                            <div className='ratioText2 fuckPMargin infoText'>
-                                <p>:</p>
-                            </div>
-                            <div className='ratioText3 fuckPMargin infoText'>
-                                <p>**************</p>
-                            </div>
-                        </div>
+                        
                         
                     </div>
                     

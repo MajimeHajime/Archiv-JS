@@ -1,14 +1,79 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 import '../assets/css/Dashboard.css'
-import { getPost } from "../peasy/api";
+import { getDetail, getPost } from "../peasy/api";
 import Loading from "./Loading";
 
 const UserForm= ({type}) => {
-   
+    const editUser = useStoreState((state) => state.editUser)
+    const detail = useStoreState((state) => state.detail)
+
+   const [username, setUsername] = useState(editUser ? detail.username :"")
+   const [name, setName] = useState(editUser ? detail.name :"")
+   const [password, setPass] = useState( "")
+   const [email, setEmail] = useState(editUser ? detail.email :"")
+   const [access, setAccessLevel] = useState(editUser ? detail.value : "0")
+   const [buttonString, setButton] = useState("Submit")
+   let formData = new FormData()
+   const [error, setError] = useState({})
+   const setEditUser = useStoreActions((state) => state.setEditUser)
+   let navigate  = useNavigate();
+
+
+
+   const handleSubmit = () => {
+    formData = new FormData()
+    username ? formData.append("username", username) :console.log("");
+    name ? formData.append("name", name) : console.log("");
+    editUser ? formData.append("id", detail.id) : password ? formData.append("password", password) : console.log("");
+    email ? formData.append("email", email) :console.log("");
+    access ? formData.append("access_levels", access): console.log("1");
+    setButton("Menginput...")
+
+    var myHeaders = new Headers();
+    myHeaders.append("Accept", "application/json");
+
+    var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: formData,
+    redirect: 'follow'
+    };
+
+    var url = editUser ? "http://127.0.0.1:8000/api/update-user" : "http://127.0.0.1:8000/api/create-user"
+
+    fetch(url, requestOptions)
+    .then(response => response.json())
+    .then(result => {if (result.error) {
+                            setError(result.error)
+                            console.log(result)
+                    }else{
+                        console.log("")
+                    }
+                    }).
+                    then(() => {
+                        setButton("Submit")
+                        if(editUser){
+                            setEditUser(false)
+                            navigate("../user/list")
+                        }
+                    })
+    .catch(error => console.log('error', error));
+
+    // getPost(formData).then(status => {
+    //     setError(status.error)
+    //     setButton("Submit")
+    //     console.log(error.nomor_surat)
+    //     // setTimeout(() => {
+    //     //     setButton("Submit")
+    //     //   }, 2000)
+    // })
+    }
     return(
         <div className="suratContainer">
-            <h className="titleForm">{type.title}</h>
+
+            <h className="titleForm">{editUser ? "Edit User" : "Add User"}</h>
             <hr/>
             <form
                 className="formArchiv marginForm" onSubmit={(e)=>{
@@ -16,25 +81,54 @@ const UserForm= ({type}) => {
                     }}
             >
                                     
-                <h className="formArchiv">Nama User</h><br/>
-                <input className="uploadForm " type="text"></input><br/>
+                <h className="formArchiv">Nama</h><br/>
+                {error.name ? <p className="errorText">{error.name}</p> : <></>}
+                <input value={name} onChange={e => setName(e.target.value)} className={"uploadForm " + (error.name ? "error" : "")} type="text"></input><br/>
+                <label className="formArchiv">Username</label><br/>
+                {error.username ? <p className="errorText">{error.username}</p> : <></>}
+                <input value={username} onChange={e => setUsername(e.target.value)} className={"uploadForm " + (error.username ? "error" : "")} type="text"></input><br/>
                 <label className="formArchiv">Password</label><br/>
-                <input className="formArchiv" type="password"></input><br/>
+                {error.password ? <p className="errorText">{error.password}</p> : <></>}
+                <input onChange={e => setPass(e.target.value)} className={"formArchiv " + (error.password ? "error" : "")} type="password"></input><br/>
                 <label className="formArchiv">Email</label><br/>
-                <input className="formArchiv" type="text"></input><br/>
+                {error.email ? <p className="errorText">{error.email}</p> : <></>}
+                <input value={email} onChange={e => setEmail(e.target.value)} className="formArchiv" type="text"></input><br/>
                 <label className="formArchiv">Hak Akses</label><br/>
-                <select className="formArchiv">
-                    <option>
+                {error.access_levels ? <p className="errorText">{error.access_levels}</p> : <></>}
+                <select value={access} onChange={e => setAccessLevel(e.target.value)} className={"uploadForm " + (error.access_levels ? "error" : "")}>
+                    <option value={0}>
                         Publik
                     </option>
-                    <option>
+                    <option value={1}>
                         Terbatas
                     </option>
-                    <option>
+                    <option value={2}>
                         Rahasia
                     </option>
+                    <option value={3}>
+                        Admin
+                    </option>
                 </select><br/>
+                <div className="toTheLeft mb10">
+                {editUser ? 
+                <div className=" ml" onClick={() => {
+                    getDetail("http://127.0.0.1:8000/api/delete-user/", detail.id).then(() => {
+                        if(editUser){
+                            setEditUser(false)
+                            navigate("../user/list")
+                        }
+                    })    
+                }
+                    }>
+                    Delete
+                </div> : <></>}
+                <div className="button" onClick={() => {
+                    handleSubmit()}
+                    }>
+                    {buttonString}
+                </div>
                 
+            </div>
             </form>
         </div>
         
@@ -45,15 +139,16 @@ const DocumentForm= ({type}) => {
     const [nomor, setNomor] = useState("")
     const [file, setFile] = useState("")
     const [nama, setNama] = useState("")
-    const [tipe, setTipe] = useState("")
-    const [hak, setHak] = useState("")
+    const [tipe, setTipe] = useState("1")
+    const [hak, setHak] = useState(0)
     const [dis, setDis] = useState("")
     const [pen, setPen] = useState("")
     const [peng, setPeng] = useState("")
-    const [ret, setRet] = useState("")
+    const [ret, setRet] = useState("1")
     const [tgl, setTgl] = useState("")
     const [aku, setAku] = useState("")
     const [tglAku, setTglAku] = useState("")
+    const [pemegang, setPemegang] = useState("")
     const [error, setError] = useState({})
 
     const dataLoading = useStoreState((state) => state.dataLoading)
@@ -66,12 +161,14 @@ const DocumentForm= ({type}) => {
         nomor ? formData.append("nomor_surat", nomor) : console.log("");
         nama ? formData.append("nama_surat", nama) :console.log("");
         dis ? formData.append("disposisi", dis): console.log("");
+        hak ? formData.append("access_level", hak): console.log("");
         pen ?  formData.append("penerima", pen) :console.log("");
         peng ? formData.append("pengirim", peng) : console.log("");
         ret ? formData.append("jenis_retensi", ret) :console.log("");
         tgl ? formData.append("tanggal_retensi", tgl) : console.log("");
         aku ? formData.append("nomor_akuisisi", aku) : console.log("");
-        tglAku ? formData.append("tanggal_akusisi", tglAku) : console.log("");
+        tglAku ? formData.append("tanggal_akuisisi", tglAku) : console.log("");
+        pemegang ? formData.append("pemegang_hak", pemegang) : console.log("");
         setButton("Mengupload...")
 
         var myHeaders = new Headers();
@@ -147,14 +244,15 @@ const DocumentForm= ({type}) => {
                     </option>
                 </select><br/>
                 <label className="formArchiv">Hak Akses</label><br/>
-                <select className="formArchiv" onChange={e => setHak(e.target.value)}>
-                    <option value={1}>
+                {error.access_level ? <p className="errorText">{error.access_level}</p> : <></>}
+                <select className={"formArchiv" + (error.access_level ? " error" : "")} onChange={e => setHak(e.target.value)}>
+                    <option value={0}>
                         Publik
                     </option>
-                    <option value={2}>
+                    <option value={1}>
                         Terbatas
                     </option>
-                    <option value={3}>
+                    <option value={2}>
                         Rahasia
                     </option>
                 </select><br/>
@@ -188,6 +286,10 @@ const DocumentForm= ({type}) => {
                 <input className={"formArchiv " + (error.nomor_akuisisi ?  " error" : "")} type="text" onChange={e => setAku(e.target.value)}></input><br/>
                 <label className="formArchiv">Tanggal Akuisisi</label><br/>
                 <input className="formArchiv" type="date" onChange={e => setTglAku(e.target.value)}></input><br/>
+                <label className="formArchiv">Pemegang Hak</label><br/>
+                {error.pemegang_hak ? <p className="errorText">{error.pemegang_hak}</p> : <></>}
+                <input className={"formArchiv " + (error.pemegang_hak ?  " error" : "")} type="text" onChange={e => setPemegang(e.target.value)}></input><br/>
+                
             </form>
             <div className="toTheLeft mb10">
                 <div className="button" onClick={() => {

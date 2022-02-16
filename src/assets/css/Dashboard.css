@@ -1,6 +1,7 @@
 body, html, .main{
     height: 100%;
     margin: 0;
+    width: 100%;
     padding: 0;
 }
 .suratContainer{
@@ -13,6 +14,17 @@ body, html, .main{
 }
 .emptySpace{
     margin-bottom: 100px;
+}
+.dashboardSplit {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 15px;
+}
+.dashboardSplit div {
+    flex-grow: 1;
+    min-height: 300px;
 }
 .detailBackground{
     font-family: 'Montserrat', sans-serif;
@@ -42,7 +54,7 @@ body, html, .main{
 .suratEntry p{
     margin: 0px;
 }
-.main{
+.body{
     overflow: hidden;
 }
 
@@ -52,7 +64,7 @@ body, html, .main{
     padding: 0px 20px;
     align-items: center;
     flex-direction: row;
-    background-color: #0582CA;
+    background-color: #00AEFD;
     height: 50px;
     justify-content: space-between;
 }
@@ -103,7 +115,7 @@ body, html, .main{
     border-color: #006496;
 }
 .activeButton:hover{
-    border-color: #0582CA;
+    border-color: #00AEFD;
 }
 .sideButton:active{
     transition: none;
@@ -154,7 +166,7 @@ body, html, .main{
     display: flex;
     flex-direction: column;
     background-color: #ECF0F5;
-    overflow: auto;
+    overflow: scroll;
     height: 100%;
     box-shadow: inset 0 0 5px #000000;
 }
@@ -240,20 +252,20 @@ body, html, .main{
     border: white 1px solid;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-weight: 700;
-    color: #0582CA;
+    color: #00AEFD;
     background-color: white;
 }
 .buttonLogin p {
     margin: 0px;
 }
 .buttonLogin:hover{
-    background-color: #0582CA;
+    background-color: #00AEFD;
     color: white;
     cursor: pointer;
 }
 .buttonLogin:active{
     background-color: white;
-    color: #0582CA;
+    color: #00AEFD;
     cursor: pointer;
 }
 .up{
@@ -288,7 +300,9 @@ body, html, .main{
     cursor: pointer;
     user-select: none;
 }
+
 .cardInside{
+    flex-grow: 1;
     font-family: 'Tauri', sans-serif;
     display: flex;
     align-items: center;
@@ -309,13 +323,24 @@ body, html, .main{
 .cardIcon{
     font-size: 50px;
 }
+.bannerNotification{
+    background: linear-gradient(89.84deg, #56CAFF 11.54%, #007BFF 104.7%);
+    width: 100%;
+    min-height: 90px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 .cardOut{
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
     user-select: none;
     color: white;
-    width: 250px;
+    width: 100%;
+    min-height: 100%;
     border: none;
     border-radius: 25px;
-    background-color: #0582CA;
+    background-color: #00AEFD;
     filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.542));
     transition: 300ms ease;
     outline: rgba(255, 255, 255, 0) 2px solid;
@@ -323,7 +348,10 @@ body, html, .main{
 }
 .buttonContainer{
     display: flex;
+    align-items:flex-end;
+    justify-content:space-between;
     gap: 20px;
+    height: 20%
 }
 .cardOut:hover{
     outline: white 2px solid;
@@ -339,8 +367,10 @@ body, html, .main{
 
 }
 .classBottom{
+    width: 100%;
     font-family: 'Raleway', sans-serif;
     background-color: #222d3272;
+    align-self:baseline;
     border-radius: 0px 0px 25px 25px;
     display: flex;
     justify-content: center;
@@ -399,20 +429,20 @@ body, html, .main{
     margin: 0;
 }
 .downloadButton{
-    outline-color: #0582CA;
-    color: #0582CA;
+    outline-color: #00AEFD;
+    color: #00AEFD;
 }
 
 .downloadButton:hover{
-    background-color: #0582CA;
+    background-color: #00AEFD;
     color: white;
 }
 
 .downloadButton:active{
-    outline-color: #0582CA;
+    outline-color: #00AEFD;
     background-color: #00000000;
     transition: none;
-    color: #0582CA;
+    color: #00AEFD;
 }
 
 .printButton{
@@ -525,6 +555,27 @@ body, html, .main{
     padding: 5px;
     margin-bottom: 20px;
 }
+
+
+.ml {
+    user-select: none;
+    background-color: rgb(223, 68, 68);
+    margin-right: 10px;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px #00000075;
+  }
+  .ml:hover{
+      cursor: pointer;
+      background-color: #d84c6c;
+  }
+
+  .ml:active{
+      background-color: white;
+  }
+
+  .toTheLeft
 .formArchiv input .error,
 .formArchiv select .error {
     -ms-box-sizing:content-box;
@@ -685,7 +736,7 @@ body, html, .main{
 
 .buttonsUser:hover{
     color: white;
-    background-color: #0582CA;
+    background-color: #00AEFD;
     cursor:pointer;
 }
 
@@ -887,7 +938,7 @@ body, html, .main{
   }
   .button:hover{
       cursor: pointer;
-      background-color: #0582CA;
+      background-color: #00AEFD;
   }
 
   .button:active{
@@ -901,4 +952,23 @@ body, html, .main{
 
   .mb10{
       margin-bottom: 10px;
+  }
+
+  .gray{
+      background-color: gray;
+  }
+
+  .errorLogin{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 5px;
+      margin-top: 10px;
+      width: 100%;
+      height: 50px;
+      background: #f05f5f93;
+      border: 1px solid rgb(244, 48, 84);
+  }
+  .errorLogin p{
+      color: rgb(228, 28, 64);
   }

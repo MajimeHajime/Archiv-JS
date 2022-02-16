@@ -1,13 +1,15 @@
 import { faCaretDown, faSignOutAlt, faUser, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useStoreActions } from 'easy-peasy';
+import { useStoreActions, useStoreState } from 'easy-peasy';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 const UserButton = () => {
     const setContent = useStoreActions((state) => state.setContent)
     const setAuthorized = useStoreActions((state) => state.setAuthorized)
+    const userData = useStoreState((state) => state.userData)
     let navigate = useNavigate();
+    const setUserData = useStoreActions((state) => state.setUserData)
     return(
         <div className='dropdown' tabIndex={0}>
             <div className='userButton'>
@@ -15,10 +17,10 @@ const UserButton = () => {
                     <FontAwesomeIcon className='userIcon' icon={faUserCircle}/>
                     <div className='fuckPMargin'>
                         <p>
-                            admin
+                            {userData.username}
                         </p>
                         <p className='akses'>
-                            Akses: 4
+                            Akses: {userData.access_levels}
                         </p>
                     </div>
                 </div>
@@ -36,6 +38,7 @@ const UserButton = () => {
                 <div className='userButtonsContainer' onClick={()=>{
                     navigate("/login")
                     setAuthorized(false)
+                    setUserData({})
                 }}>
                     <div className='fuckPMargin buttonsUser'>
                         <FontAwesomeIcon icon={faSignOutAlt}/>

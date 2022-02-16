@@ -39,7 +39,7 @@ const store = createStore(
       state.loginLoading = payload
     }),
 
-
+    dataUser: {},
     dataSurat: 
     {
       keluar:
@@ -56,6 +56,9 @@ const store = createStore(
       
     }
         ,
+    setDataUser: action((state,payload) => {
+      state.dataUser = payload
+    }),
     setSataSuratMasuk: action((state, payload) => {
       state.dataSurat.masuk = payload;
     }),
@@ -69,6 +72,14 @@ const store = createStore(
     detail: {},
     setDetail: action((state,payload) => {
       state.detail = payload
+    }),
+    userData: {},
+    setUserData: action((state,payload) => {
+      state.userData = payload
+    }),
+    editUser: false,
+    setEditUser: action((state,payload) => {
+      state.editUser = payload
     })
    
   },

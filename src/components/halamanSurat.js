@@ -16,10 +16,14 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const setContent = useStoreActions((state) => state.setContent)
     const setDataLoading = useStoreActions((state) => state.setDataLoading)
     const setDetail = useStoreActions((state) => state.setDetail)
-
+    const dataUser = useStoreState((state) => state.dataUser)
     const setKm = useStoreActions((state) => state.setKm)
     const km = useStoreState((state) => state.km)
     const setSataSuratMasuk = useStoreActions((state) => state.setSataSuratMasuk)
+    const setDataUser = useStoreActions((state) => state.setDataUser)
+    const userData = useStoreState((state) => state.userData)
+    const setEditUser = useStoreActions((state) => state.setEditUser)
+
 
     let navigate  = useNavigate();
 
@@ -32,9 +36,11 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 <select onChange={(value) => {
                     setKm(value.target.value)
                     setDataLoading(true)
-                    getRequest(
-                        value.target.value == "masuk" ? 2 : 1
-                    ).then(
+                    getRequest('http://127.0.0.1:8000/api/surats/', {
+                        tipe: value.target.value == "masuk" ? 2 : 1,
+                        entry: entry,
+                        access_level: userData ? userData.access_levels : 0
+                    }).then(
                         data => {
                             setSataSuratMasuk(data.data);
                             setDataLoading(false);}
@@ -83,36 +89,58 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 :
                 type === "surat" ?
                 km === "keluar" ?
-                dataSurat.masuk.length > 0 ?
-                dataSurat.masuk.map((data, index)=>{
+                dataSurat.masuk.data ?
+                dataSurat.masuk.data.map((data, index)=>{
                     return <ListSurat onClick={
                         e => {
                             console.log(data.id)
-                            getDetail(data.id).then(data=> setDetail(data.data)).then(() => navigate("../detail"))
+                            getDetail("http://127.0.0.1:8000/api/surats/",data.id).then(data=> setDetail(data.data)).then(() => navigate("../detail"))
                         }
                     } info={{
                     penerima: data.nomor_surat || "",
                     tanggal: data.updated_at || "",
-                    document: data.nama_file || "",
+                    document: data.nama_surat || "",
                     link: "#",
                     grade: data.access_level || "Public"}}/>
                 })
                 :
                 <></>
                 :
-                dataSurat.masuk.length > 0 ?
-                dataSurat.masuk.map((data, index)=>{
+                dataSurat.masuk.data ?
+                dataSurat.masuk.data.map((data, index)=>{
                     return <ListSurat onClick={
                         e => {
                             console.log(data.id)
-                            getDetail(data.id).then(data=> setDetail(data.data)).then(() => navigate("../detail"))
+                            getDetail("http://127.0.0.1:8000/api/surats/", data.id).then(data=> {
+                                console.log(data)
+                                setDetail(data.data)}).then(() => navigate("../detail"))
                         }
                     } info={{
                         penerima: data.nomor_surat || "",
                         tanggal: data.updated_at || "",
-                        document: data.nama_file || "",
+                        document: data.nama_surat || "",
                         link: "#",
                         grade: data.access_level || "Public"}}/>
+                }) 
+                :
+                <></>
+                : type === "user" ? 
+                dataUser.data ?
+                dataUser.data.map((data, index)=>{
+                    return <ListSurat onClick={
+                        e => {
+                            console.log(data.id)
+                            getDetail("http://127.0.0.1:8000/api/detail-user/", data.id).then(data=> {
+                                console.log(data)
+                                setEditUser(true)
+                                setDetail(data.data)}).then(() => navigate("../../adduser"))
+                        }
+                    } info={{
+                        penerima: data.id || "",
+                        tanggal: data.username || "",
+                        document: data.email || "",
+                        link: "#",
+                        grade: data.access_levels || "Public"}}/>
                 }) 
                 :
                 <></>
@@ -123,15 +151,22 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                     } info={data}/>
                 })
             }
+            {
+            
+            type == "surat" ?
             <div className="footer">
-                <p>Showing 1 to {entry} of {type === "surat" ? km === "keluar" ?dataSurat.keluar.length : dataSurat.masuk.length : dataRekap.length} entries</p>
+                
+                <p>Showing {dataSurat.masuk.from ? dataSurat.masuk.from : ""} to {dataSurat.masuk.to ? dataSurat.masuk.to : ""} of {dataSurat.masuk.total? dataSurat.masuk.total : ""} entries</p>
                 
                 <div className="button" onClick={() =>{
                     setDataLoading(true)
-                    getRequest(
-                        km == "masuk" ? 2 : 1
-                    ).then(
+                    getRequest('http://127.0.0.1:8000/api/surats/', {
+                        tipe: km == "masuk" ? 2 : 1,
+                        entry: entry,
+                        access_level: userData ? userData.access_levels : 0
+                    }).then(
                         data => {
+                            console.log(data.data)
                             setSataSuratMasuk(data.data);
                             setDataLoading(false);}
                     )
@@ -140,29 +175,75 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                     >
                     Update
                 </div>
+
                 <div className="pagination">
-                    <div onClick={
-                        () => {
-                            if (page >= 2) {
-                                setPage(page - 1)
-                            }
-                        }
-                    } className="buttonPage">
-                        Previous
-                    </div>
-                    <div className="page">
-                        {page}
-                    </div>
-                    <div onClick={
-                        () => {
-                            setPage(page + 1)
-                        }
-                    }
-                    className="buttonPage">
-                        Next
-                    </div>
+                    {dataSurat.masuk.links ? dataSurat.masuk.links.map((data, index) => {
+                        return( data.url ?
+                        <div 
+                            className={"" + (data.active ? "page": "")}
+                            onClick={() =>{
+                            setDataLoading(true)
+                            getRequest(data.url, {
+                                tipe: km == "masuk" ? 2 : 1,
+                                entry: entry
+                            }).then(
+                                data => {
+                                    console.log(data.data)
+                                    setSataSuratMasuk(data.data);
+                                    setDataLoading(false);}
+                            )
+                            }}>
+                                {data.label}
+
+                        </div> : <></>)
+                    }) : <></>}
+                    
                 </div>
+            </div> :
+            <div className="footer">
+                
+            <p>Showing {dataUser.from ? dataUser.from : ""} to {dataUser.to ? dataUser.to : ""} of {dataUser.total? dataUser.total : ""} entries</p>
+            
+            <div className="button" onClick={() =>{
+                setDataLoading(true)
+                getRequest('http://127.0.0.1:8000/api/user-list/', {
+                    entry: entry
+                }).then(
+                    data => {
+                        console.log(data.data)
+                        setDataUser(data.data);
+                        setDataLoading(false);}
+                )
+                    
+                }}
+                >
+                Update
             </div>
+
+            <div className="pagination">
+                {dataUser.links ? dataUser.links.map((data, index) => {
+                    return( data.url ?
+                    <div 
+                        className={"" + (data.active ? "page": "")}
+                        onClick={() =>{
+                        setDataLoading(true)
+                        getRequest(data.url, {
+                            entry: entry
+                        }).then(
+                            data => {
+                                console.log(data.data)
+                                setDataUser(data.data);
+                                setDataLoading(false);}
+                        )
+                        }}>
+                            {data.label}
+
+                    </div> : <></>)
+                }) : <></>}
+                
+            </div>
+        </div>
+            }
         </div>
         </>
     )
