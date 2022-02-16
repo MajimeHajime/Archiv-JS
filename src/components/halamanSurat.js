@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { getDetail, getPost, getRequest, getSurat } from "../peasy/api";
 import Loading from "./Loading";
 
-const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
+const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
     const [page, setPage] = useState(1)
     const [entry, setEntry] =useState(4)
     const content = useStoreState((state) => state.dashboardContent)
@@ -22,6 +22,9 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
     const setSataSuratMasuk = useStoreActions((state) => state.setSataSuratMasuk)
     const setDataUser = useStoreActions((state) => state.setDataUser)
     const userData = useStoreState((state) => state.userData)
+    const dataRekap = useStoreState((state) => state.dataRekap)
+    const setDataRekap = useStoreActions((state) => state.setdataRekap)
+
     const setEditUser = useStoreActions((state) => state.setEditUser)
 
 
@@ -140,15 +143,22 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                         tanggal: data.username || "",
                         document: data.email || "",
                         link: "#",
-                        grade: data.access_levels || "Public"}}/>
+                        grade: data.access_levels || "0"}}/>
                 }) 
                 :
                 <></>
                 :
+                // console.log(dataRekap)
                 dataRekap.map((data, index)=>{
                     return <ListSurat onClick={
-                        () => {type === "user" ? navigate("../edit") : navigate("../detail")}
-                    } info={data}/>
+                        () => {
+                            console.log(data.hak)}
+                    } info={{
+                        penerima: data.hak || "",
+                        tanggal: data.jumlah || "0",
+                        document: data.keluar || "0",
+                        link: "#",
+                        grade: data.masuk || "0"}}/>
                 })
             }
             {
@@ -206,12 +216,12 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
             
             <div className="button" onClick={() =>{
                 setDataLoading(true)
-                getRequest('http://127.0.0.1:8000/api/user-list/', {
+                getRequest(type == "user" ? 'http://127.0.0.1:8000/api/user-list/' : 'http://127.0.0.1:8000/api/rekap/', {
                     entry: entry
                 }).then(
                     data => {
                         console.log(data.data)
-                        setDataUser(data.data);
+                        type == "user" ? setDataUser(data.data) :setDataRekap(data.data);
                         setDataLoading(false);}
                 )
                     
@@ -220,7 +230,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                 Update
             </div>
 
-            <div className="pagination">
+            {type == "rekap" ? <></> :<div className="pagination">
                 {dataUser.links ? dataUser.links.map((data, index) => {
                     return( data.url ?
                     <div 
@@ -241,7 +251,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type, dataRekap}) =>{
                     </div> : <></>)
                 }) : <></>}
                 
-            </div>
+            </div>}
         </div>
             }
         </div>

@@ -12,7 +12,10 @@ const ListSurat = (props) => {
                 <p>{info.tanggal}</p>
             </div>
             <div className="suratName">
-                <p>{truncateString(info.document, 45)}</p>
+                <p>{
+                // truncateString(info.document, 45)
+                info.document
+                }</p>
             </div>
             <div className="securityGrade">
                 <p>{info.grade}</p>

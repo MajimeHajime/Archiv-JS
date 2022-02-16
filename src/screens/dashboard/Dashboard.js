@@ -71,7 +71,28 @@ const Dashboard = () => {
             }
         ) : console.log("")
     return(
-        <div className="body">
+        <div className="main ">
+            <div className="header">
+                    <div>
+                        <img className="arch" src={ArchV}/>
+                    </div>
+                    { authorized ?
+                    // console.log("") 
+                    <UserButton/>
+                    :
+                    <Link to="/login">
+                        <div className="buttonLogin">
+                            <p>
+                                Log In
+                            </p>
+                        </div>
+                    </Link>
+                    }
+
+                </div>
+            
+            <div className="body"> 
+                
             <div className={sidebar ? "sidebar" : "sidebarNO"}>
                     <div className="mainMenu">
                         <div className="sideMainIcon" onClick={() => {
@@ -108,26 +129,6 @@ const Dashboard = () => {
                     </>
                     : console.log("")}
             </div>
-            <div className="main"> 
-                <div className="header">
-                    <div>
-                        <img className="arch" src={ArchV}/>
-                    </div>
-                    { authorized ?
-                    // console.log("") 
-                    <UserButton/>
-                    :
-                    <Link to="/login">
-                        <div className="buttonLogin">
-                            <p>
-                                Log In
-                            </p>
-                        </div>
-                    </Link>
-                    }
-
-                </div>
-                
                 <div className="content">
                     {/* <p className="pageName">{content}</p> */}
                     <Outlet/>

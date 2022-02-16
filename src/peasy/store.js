@@ -77,6 +77,10 @@ const store = createStore(
     setUserData: action((state,payload) => {
       state.userData = payload
     }),
+    dataRekap: [],
+    setdataRekap: action((state,payload) => {
+      state.dataRekap = payload
+    }),
     editUser: false,
     setEditUser: action((state,payload) => {
       state.editUser = payload
