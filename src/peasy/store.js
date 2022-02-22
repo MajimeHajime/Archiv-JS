@@ -84,6 +84,10 @@ const store = createStore(
     editUser: false,
     setEditUser: action((state,payload) => {
       state.editUser = payload
+    }),
+    dashboard: {},
+    setDashboard: action((state, payload) => {
+      state.dashboard = payload
     })
    
   },

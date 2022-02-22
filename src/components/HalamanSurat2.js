@@ -4,7 +4,7 @@ import HalamanSurat from "./halamanSurat";
 
 const HalamanSurat2 = () => {
     const halamanInfo2 = {
-        title: "Halaman Surat"
+        title: "Daftar Surat"
     }
     const collumn2 = {
         penerima: "No. Surat",
@@ -16,6 +16,9 @@ const HalamanSurat2 = () => {
 
     return(
         <>
+            <div>
+
+            </div>
             <HalamanSurat type={"surat"} dataSurat={dataSurat} halamanInfo={halamanInfo2} collumn={collumn2}/>
             <div className="emptySpace"></div>
         </>

@@ -1,8 +1,8 @@
 import Login from './screens/auth/LoginScreen';
 import Dashboard from './screens/dashboard/Dashboard';
-import { BrowserRouter as Router, Routes, 
+import { HashRouter as Router, Routes, 
   Route, Navigate} from "react-router-dom";
-import { StoreProvider } from 'easy-peasy';
+import { StoreProvider, useStoreState } from 'easy-peasy';
 import store from './peasy/store';
 import DashboardPage from './components/DashboardPage';
 import HalamanSurat from './components/halamanSurat';
@@ -19,39 +19,51 @@ import AddUser from './components/AddUser';
 import DetailSurat from './components/detailSurat';
 import EditUser from './components/EditUser';
 import RekapSurat from './components/RekapSurat';
+import Error from './components/unauth';
 
 
 
 function App() {
+
   return (
     <>
         <StoreProvider store={store}>
-          <Router>
-            <Routes>
-              <Route exact path = "/" element={<Navigate to="/main/dashboard"/>}/>
-              <Route exact path="/main/*" element={<Dashboard/>}>
-                <Route path="dashboard" element={<DashboardPage/>}/>
-                <Route path="surat/*" element={<SuratContainer/>}>
-                  <Route path="list" element={<HalamanSurat2/>}/>
-                  <Route path="edit"/>  
-                  <Route path="detail" element={<DetailSurat/>}/>
-                </Route>
-                <Route path="rekap/*" element={<RekapContainer/>}>
-                  <Route path="list" element={<RekapSurat/>}/>
-                  <Route path="detail" element={<HalamanSurat2/>}/>
-                </Route>
-                <Route path="upload" element={<InputSurat/>}/>
-                <Route path="profile" element={<UserProfile/>} />
-                <Route path="user" element={<UserContainer/>}> 
-                  <Route path="list" element={<UserList/>}/>
-                  <Route path="edit" element={<EditUser/>}/>
-                </Route>
-                <Route path="adduser" element={<AddUser/>}/>
-              </Route>
-              <Route exact path="/login" element={<Login/>}/>
-            </Routes>
-          </Router>
+          <Bruh/>
         </StoreProvider>
+    </>
+  );
+}
+const Bruh = () => {
+  const authorized = useStoreState((state) => state.authorized)
+  const userData = useStoreState((state) => state.userData)
+
+  return (
+    <>
+        <Router>
+          <Routes>
+            <Route exact path = "/" element={<Navigate to="/main/dashboard"/>}/>
+            <Route exact path="/main/*" element={<Dashboard/>}>
+              <Route path="dashboard" element={<DashboardPage/>}/>
+              <Route path="surat/*" element={<SuratContainer/>}>
+                <Route path="list" element={<HalamanSurat2/>}/>
+                <Route path="edit"/>  
+                <Route path="detail" element={<DetailSurat/>}/>
+              </Route>
+              <Route path="rekap/*" element={<RekapContainer/>}>
+                <Route path="list" element={<RekapSurat/>}/>
+                {/* <Route path="detail" element={<HalamanSurat2/>}/> */}
+              </Route>
+              <Route path="upload" element={userData.access_levels ? userData.access_levels >= "1" ? <InputSurat/>: <Error/> : <Error/>}/>
+              <Route path="profile" element={authorized ? <UserProfile/>: <Error/>} />
+              <Route path="user" element={userData.access_levels ? userData.access_levels == "3" ? <UserContainer/>: <Error/> : <Error/> }> 
+                <Route path="list" element={ userData.access_levels ? userData.access_levels == "3" ? <UserList/>: <Error/> : <Error/>}/>
+                <Route path="edit" element={userData.access_levels ? userData.access_levels == "3" ? <EditUser/>: <Error/> : <Error/>}/>
+              </Route>
+              <Route path="adduser" element={userData.access_levels ? userData.access_levels == "3" ? <AddUser/> : <Error/> : <Error/> }/>
+            </Route>
+            <Route exact path="/login" element={<Login/>}/>
+          </Routes>
+        </Router>
     </>
   );
 }

@@ -140,7 +140,7 @@ const DocumentForm= ({type}) => {
     const [file, setFile] = useState("")
     const [nama, setNama] = useState("")
     const [tipe, setTipe] = useState("1")
-    const [hak, setHak] = useState(0)
+    const [hak, setHak] = useState('0')
     const [dis, setDis] = useState("")
     const [pen, setPen] = useState("")
     const [peng, setPeng] = useState("")
@@ -277,15 +277,23 @@ const DocumentForm= ({type}) => {
                         Permanen
                     </option>
                 </select><br/>
-                
+                {
+                    ret == 3 ? 
+                    <></>
+                    : 
+                    <>
                 <label className="formArchiv">Tanggal Retennsi</label><br/>
                 <input className="formArchiv" type="date" onChange={e => setTgl(e.target.value)}></input><br/>
-                
+                </>
+                    }
                 <label className="formArchiv">Nomor Akuisisi</label><br/>
                 {error.nomor_akuisisi ? <p className="errorText">{error.nomor_akuisisi}</p> : <></>}
                 <input className={"formArchiv " + (error.nomor_akuisisi ?  " error" : "")} type="text" onChange={e => setAku(e.target.value)}></input><br/>
-                <label className="formArchiv">Tanggal Akuisisi</label><br/>
-                <input className="formArchiv" type="date" onChange={e => setTglAku(e.target.value)}></input><br/>
+                
+                    <label className="formArchiv">Tanggal Akuisisi</label><br/>
+                    <input className="formArchiv" type="date" onChange={e => setTglAku(e.target.value)}></input><br/>
+                    
+                
                 <label className="formArchiv">Pemegang Hak</label><br/>
                 {error.pemegang_hak ? <p className="errorText">{error.pemegang_hak}</p> : <></>}
                 <input className={"formArchiv " + (error.pemegang_hak ?  " error" : "")} type="text" onChange={e => setPemegang(e.target.value)}></input><br/>

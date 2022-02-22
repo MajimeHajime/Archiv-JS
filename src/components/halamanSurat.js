@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSortAmountDown } from "@fortawesome/free-solid-svg-icons";
@@ -24,9 +24,28 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
     const userData = useStoreState((state) => state.userData)
     const dataRekap = useStoreState((state) => state.dataRekap)
     const setDataRekap = useStoreActions((state) => state.setdataRekap)
+    const [init, setInit] = useState(true)
 
     const setEditUser = useStoreActions((state) => state.setEditUser)
 
+    useEffect(() => {
+        init ?
+        
+        getRequest( type == "surat" ? 'http://127.0.0.1:8000/api/surats/' : type == "user" ? 'http://127.0.0.1:8000/api/user-list/' : 'http://127.0.0.1:8000/api/rekap/', {
+            tipe: 2,
+            entry: 4,
+            access_level: userData.access_levels ? userData.access_levels : "0"
+        }).then(
+            data => {
+                console.log(data.data)
+                type ==  "surat" ? setSataSuratMasuk(data.data) : type == "user" ? setDataUser(data.data) :setDataRekap(data.data);
+                setDataLoading(false);
+                setInit(false)
+            }, []
+        )
+        : console.log("a")
+        
+    })
 
     let navigate  = useNavigate();
 
@@ -57,6 +76,14 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                 }
                 
             </div>
+            {type == "surat" ? <div className=" search ">
+                <input className="" type="text"></input><br/>
+                <div className="fuckPMargin searchButton">
+                    <p>
+                        Search
+                    </p>
+                </div>
+            </div> : <></>}
             <div className="suratEntry">
                 <p>Show </p>
                 <input className="inputEntry" value={entry} onChange={(val) => setEntry(val.target.value)} type="text"/>
@@ -104,7 +131,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                     tanggal: data.updated_at || "",
                     document: data.nama_surat || "",
                     link: "#",
-                    grade: data.access_level || "Public"}}/>
+                    grade: data.access_level || "0"}}/>
                 })
                 :
                 <></>
@@ -123,7 +150,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                         tanggal: data.updated_at || "",
                         document: data.nama_surat || "",
                         link: "#",
-                        grade: data.access_level || "Public"}}/>
+                        grade: data.access_level || "0"}}/>
                 }) 
                 :
                 <></>
@@ -173,7 +200,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                     getRequest('http://127.0.0.1:8000/api/surats/', {
                         tipe: km == "masuk" ? 2 : 1,
                         entry: entry,
-                        access_level: userData ? userData.access_levels : 0
+                        access_level: userData.access_levels ? userData.access_levels : "0"
                     }).then(
                         data => {
                             console.log(data.data)

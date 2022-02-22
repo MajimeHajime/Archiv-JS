@@ -130,6 +130,7 @@ const Dashboard = () => {
                     : console.log("")}
             </div>
                 <div className="content">
+                    <h className="titleForm">{content}  <span className="wellcome"> {content == "Dashboard" ? userData.name ? "| Wellcome " + userData.name + "!" : "" : ""} </span> </h>
                     {/* <p className="pageName">{content}</p> */}
                     <Outlet/>
                     {/* {content == "Dashboard" ? <DashboardPage/> : 
@@ -151,6 +152,7 @@ const Dashboard = () => {
                         title: "Edit User"
                     }} /> :<div></div>}
                     <div className="emptySpace"></div> */}
+                    <div className="emptySpace"></div>
 
                 </div>
             </div>

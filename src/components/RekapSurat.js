@@ -3,7 +3,7 @@ import HalamanSurat from "./halamanSurat";
 
 const RekapSurat = () => {
     const halamanInfo2 = {
-        title: "Rekap Surat"
+        title: "Rekap Masuk Keluar"
     }
     const collumn2 = {
         penerima: "Pemegang Hak",

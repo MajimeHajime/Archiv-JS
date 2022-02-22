@@ -69,7 +69,7 @@ const DetailSurat = () => {
                                          "" : ""}
                                     </p>
                                     <p>
-                                        {detail.tanggal_retensi || ""}
+                                        {detail.jenis_retensi == 3 ? "" :detail.tanggal_retensi || ""}
                                     </p>
 
                                 </div>
