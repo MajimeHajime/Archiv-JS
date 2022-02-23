@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../assets/css/Dashboard.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion, faUpload, faUserFriends, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faColumns, faBars, faEnvelope, faFileAlt, faFilePdf, faQrcode, faQuestion, faUpload, faUserFriends, faUserPlus, faInfo } from "@fortawesome/free-solid-svg-icons";
 
 import SideButton from "../../components/sidebarButtons";
 import ArchV from "../../assets/img/ArchV.png"
@@ -52,6 +52,14 @@ const Dashboard = () => {
             link: "rekap/list"
         }
     ]
+    const aboutUs = 
+        {
+            desc: "About Us",
+            icon: faInfo,
+            active: false,
+            link: "about"
+        }
+    
 
     const content = useStoreState((state) => state.dashboardContent)
     const sidebar = useStoreState((state) => state.sidebar)
@@ -128,6 +136,7 @@ const Dashboard = () => {
                         }               
                     </>
                     : console.log("")}
+                    <SideButton link={aboutUs.link} info={aboutUs} onClick ={ () => {setContent("About Us")}}/>
             </div>
                 <div className="content">
                     <h className="titleForm">{content}  <span className="wellcome"> {content == "Dashboard" ? userData.name ? "| Wellcome " + userData.name + "!" : "" : ""} </span> </h>

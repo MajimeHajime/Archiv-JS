@@ -73,7 +73,9 @@ const store = createStore(
     setDetail: action((state,payload) => {
       state.detail = payload
     }),
-    userData: {},
+    userData: {
+      
+    },
     setUserData: action((state,payload) => {
       state.userData = payload
     }),

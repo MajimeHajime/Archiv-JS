@@ -5,18 +5,21 @@ import pfp from '../assets/img/pfp.jpg'
 import '../assets/css/Dashboard.css'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { useNavigate } from 'react-router-dom'
+import { getDetail } from '../peasy/api'
 
 const UserProfile = () => {
     const setContent = useStoreActions((state) => state.setContent)
     let navigate = useNavigate()
     const userData = useStoreState((state)=> state.userData)
+    const setDetail = useStoreActions((state) => state.setDetail)
+    const setEditUser = useStoreActions((state) => state.setEditUser)
 
     return(
         <div className='suratContainer'>
             <div className="profileContainer">
                 <div className='informationUser ratioUser'>
                     <div className='infoText fuckPMargin centeringUser'>
-                        <img src={pfp} className='userPict'/>
+                        {/* <img src={pfp} className='userPict'/> */}
                         <p>
                             {userData.name}
                         </p>
@@ -29,7 +32,14 @@ const UserProfile = () => {
                 <div className='informationUser ratioUser1'>
                     <div className='flexBetween'>
                         <p className='userHeader'>Profile Details</p> 
-                        <div onClick={()=>navigate("../user/edit")} className='pointerCursor editButton'>
+                        <div onClick={
+                                e => {
+                                    getDetail("http://127.0.0.1:8000/api/detail-user/", userData.id).then(data=> {
+                                        setEditUser(true)
+                                        setDetail(data.data)}).then(() => navigate("../adduser"))
+                                }
+                            
+                        } className='pointerCursor editButton'>
                             <FontAwesomeIcon icon={faEdit}/>
                         </div>
                     </div>

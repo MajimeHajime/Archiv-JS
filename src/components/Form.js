@@ -1,5 +1,6 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React, {useState} from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import '../assets/css/Dashboard.css'
 import { getDetail, getPost } from "../peasy/api";
@@ -13,14 +14,20 @@ const UserForm= ({type}) => {
    const [name, setName] = useState(editUser ? detail.name :"")
    const [password, setPass] = useState( "")
    const [email, setEmail] = useState(editUser ? detail.email :"")
-   const [access, setAccessLevel] = useState(editUser ? detail.value : "0")
+   const [access, setAccessLevel] = useState(editUser ? detail.access_levels : "0")
    const [buttonString, setButton] = useState("Submit")
    let formData = new FormData()
    const [error, setError] = useState({})
    const setEditUser = useStoreActions((state) => state.setEditUser)
    let navigate  = useNavigate();
 
+   useEffect(() => {
 
+    // returned function will be called on component unmount 
+    return () => {
+        setEditUser(false)
+    }
+  }, [])
 
    const handleSubmit = () => {
     formData = new FormData()
@@ -33,7 +40,7 @@ const UserForm= ({type}) => {
 
     var myHeaders = new Headers();
     myHeaders.append("Accept", "application/json");
-
+    
     var requestOptions = {
     method: 'POST',
     headers: myHeaders,
@@ -56,8 +63,8 @@ const UserForm= ({type}) => {
                         setButton("Submit")
                         if(editUser){
                             setEditUser(false)
-                            navigate("../user/list")
                         }
+                        navigate("../user/list")
                     })
     .catch(error => console.log('error', error));
 
@@ -136,21 +143,39 @@ const UserForm= ({type}) => {
 }
 const DocumentForm= ({type}) => {
     let formData = new FormData()
-    const [nomor, setNomor] = useState("")
-    const [file, setFile] = useState("")
-    const [nama, setNama] = useState("")
-    const [tipe, setTipe] = useState("1")
-    const [hak, setHak] = useState('0')
-    const [dis, setDis] = useState("")
-    const [pen, setPen] = useState("")
-    const [peng, setPeng] = useState("")
-    const [ret, setRet] = useState("1")
-    const [tgl, setTgl] = useState("")
-    const [aku, setAku] = useState("")
-    const [tglAku, setTglAku] = useState("")
-    const [pemegang, setPemegang] = useState("")
-    const [error, setError] = useState({})
 
+    const editUser = useStoreState((state) => state.editUser)
+
+    const detail = useStoreState((state) => state.detail)
+
+    const [nomor, setNomor] = useState(editUser ? detail.nomor_surat : "")
+    const [file, setFile] = useState("")
+    const [nama, setNama] = useState(editUser ? detail.nama_surat : "")
+    const [tipe, setTipe] = useState(editUser ? detail.tipe : "1")
+    const [hak, setHak] = useState(editUser ? detail.access_level : "0")
+    const [dis, setDis] = useState(editUser ? detail.disposisi : "")
+    const [pen, setPen] = useState(editUser ? detail.penerima : "")
+    const [peng, setPeng] = useState(editUser ? detail.pengirim : "")
+    const [ret, setRet] = useState(editUser ? detail.jenis_retensi : "1")
+    const [tgl, setTgl] = useState(editUser ? detail.tanggal_retensi: "")
+    const [aku, setAku] = useState(editUser ? detail.nomor_akuisisi : "")
+    const [tglAku, setTglAku] = useState(editUser ? detail.tanggal_akuisisi : "")
+    const [pemegang, setPemegang] = useState(editUser ? detail.pemegang_hak : "")
+    const [error, setError] = useState({})
+    let navigate  = useNavigate();
+
+   
+
+   const setEditUser = useStoreActions((state) => state.setEditUser)
+
+
+    useEffect(() => {
+
+        // returned function will be called on component unmount 
+        return () => {
+            setEditUser(false)
+        }
+      }, [])
     const dataLoading = useStoreState((state) => state.dataLoading)
     const setDataLoading = useStoreActions((state) => state.setDataLoading)
     const [buttonString, setButton] = useState("Submit")
@@ -181,7 +206,7 @@ const DocumentForm= ({type}) => {
         redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:8000/api/create", requestOptions)
+        fetch(editUser ? "http://127.0.0.1:8000/api/surats/" + editUser.id : "http://127.0.0.1:8000/api/create", requestOptions)
         .then(response => response.json())
         .then(result => {if (result.error) {
                                 setError(result.error)
@@ -190,7 +215,10 @@ const DocumentForm= ({type}) => {
                             console.log("")
                         }
                         }).
-                        then(() => {setButton("Submit")})
+                        then(() => {
+                            setButton("Submit")
+                            navigate("../surat/list")
+                        })
         .catch(error => console.log('error', error));
 
         // getPost(formData).then(status => {
@@ -204,7 +232,8 @@ const DocumentForm= ({type}) => {
         }
     return(
         <div className="suratContainer">
-            <h className="titleForm">{type.title}</h>
+            <h className="titleForm">{editUser ? "Edit" : "Upload Surat"}</h>
+
             <hr/>
             <form
                 className="formArchiv marginForm fuckPMargin" onSubmit={(e)=>{
@@ -213,7 +242,7 @@ const DocumentForm= ({type}) => {
             >
                 
                 <div className="fileUpload">
-                    {type.edit ?
+                    {editUser ?
                     <></>
                     :
                     <div>
@@ -227,15 +256,15 @@ const DocumentForm= ({type}) => {
                     <div className="uploadHere fuckPMargin ">
                         <h className="formArchiv">Nomor Surat</h><br/>
                         {error.nomor_surat ? <p className="errorText">{error.nomor_surat}</p> : <></>}
-                        <input className={"uploadForm " + (error.nomor_surat ?  " error" : "")} type="text" onChange={e => setNomor(e.target.value)}></input>
+                        <input value={nomor} className={"uploadForm " + (error.nomor_surat ?  " error" : "")} type="text" onChange={e => setNomor(e.target.value)}></input>
                     </div>
                 </div>
                 <label className="formArchiv">Nama Surat</label><br/>
                 {error.nama_surat ? <p className="errorText">{error.nama_surat}</p> : <></>}
-                <input className={"formArchiv" + (error.nama_surat ?  " error" : "")} type="text" onChange={e => setNama(e.target.value)}></input><br/>
+                <input value={nama} className={"formArchiv" + (error.nama_surat ?  " error" : "")} type="text" onChange={e => setNama(e.target.value)}></input><br/>
                 <label className={"formArchiv" }>Tipe Surat</label><br/>
                 {error.tipe ? <p className="errorText">{error.tipe}</p> : <></>}
-                <select className={"formArchiv" + (error.tipe ?  " error" : "")} onChange={e => setTipe(e.target.value)}>
+                <select  className={"formArchiv" + (error.tipe ?  " error" : "")} onChange={e => setTipe(e.target.value)}>
                     <option value={1}>
                         Keluar
                     </option>
@@ -257,13 +286,13 @@ const DocumentForm= ({type}) => {
                     </option>
                 </select><br/>
                 <label className="formArchiv">Disposisi</label><br/>
-                <textarea className="formArchiv" type="text" onChange={e => setDis(e.target.value)}></textarea><br/>
+                <textarea value={dis} className="formArchiv" type="text" onChange={e => setDis(e.target.value)}></textarea><br/>
                 <label className="formArchiv">Penerima</label><br/>
                 {error.penerima ? <p className="errorText">{error.penerima}</p> : <></>}
-                <input className={"formArchiv " + (error.penerima ?  " error" : "")} type="text" onChange={e => setPen(e.target.value)}></input><br/>
+                <input value={pen} className={"formArchiv " + (error.penerima ?  " error" : "")} type="text" onChange={e => setPen(e.target.value)}></input><br/>
                 <label className="formArchiv">Pengirim</label><br/>
                 {error.pengirim ? <p className="errorText">{error.pengirim}</p> : <></>}
-                <input className={"formArchiv " + (error.pengirim ?  " error" : "")} type="text" onChange={e => setPeng(e.target.value)}></input><br/>
+                <input value={peng} className={"formArchiv " + (error.pengirim ?  " error" : "")} type="text" onChange={e => setPeng(e.target.value)}></input><br/>
                 <label className="formArchiv">Jenis Retensi</label><br/>
                 {error.jenis_retensi ? <p className="errorText">{error.jenis_retensi}</p> : <></>}
                 <select className={"formArchiv " + (error.jenis_retensi ?  " error" : "")} onChange={e => setRet(e.target.value)}>
@@ -283,20 +312,20 @@ const DocumentForm= ({type}) => {
                     : 
                     <>
                 <label className="formArchiv">Tanggal Retennsi</label><br/>
-                <input className="formArchiv" type="date" onChange={e => setTgl(e.target.value)}></input><br/>
+                <input value={tgl} className="formArchiv" type="date" onChange={e => setTgl(e.target.value)}></input><br/>
                 </>
                     }
                 <label className="formArchiv">Nomor Akuisisi</label><br/>
                 {error.nomor_akuisisi ? <p className="errorText">{error.nomor_akuisisi}</p> : <></>}
-                <input className={"formArchiv " + (error.nomor_akuisisi ?  " error" : "")} type="text" onChange={e => setAku(e.target.value)}></input><br/>
+                <input value={aku} className={"formArchiv " + (error.nomor_akuisisi ?  " error" : "")} type="text" onChange={e => setAku(e.target.value)}></input><br/>
                 
                     <label className="formArchiv">Tanggal Akuisisi</label><br/>
-                    <input className="formArchiv" type="date" onChange={e => setTglAku(e.target.value)}></input><br/>
+                    <input value={tglAku} className="formArchiv" type="date" onChange={e => setTglAku(e.target.value)}></input><br/>
                     
                 
                 <label className="formArchiv">Pemegang Hak</label><br/>
                 {error.pemegang_hak ? <p className="errorText">{error.pemegang_hak}</p> : <></>}
-                <input className={"formArchiv " + (error.pemegang_hak ?  " error" : "")} type="text" onChange={e => setPemegang(e.target.value)}></input><br/>
+                <input value={pemegang} className={"formArchiv " + (error.pemegang_hak ?  " error" : "")} type="text" onChange={e => setPemegang(e.target.value)}></input><br/>
                 
             </form>
             <div className="toTheLeft mb10">

@@ -20,6 +20,8 @@ import DetailSurat from './components/detailSurat';
 import EditUser from './components/EditUser';
 import RekapSurat from './components/RekapSurat';
 import Error from './components/unauth';
+import LandingPage from './components/LandingPage';
+import AboutUs from './components/AboutUs';
 
 
 
@@ -41,9 +43,11 @@ const Bruh = () => {
     <>
         <Router>
           <Routes>
-            <Route exact path = "/" element={<Navigate to="/main/dashboard"/>}/>
+            <Route exact path = "/" element={authorized ? <Navigate to="/main/dashboard"/> : <LandingPage/>}/>
             <Route exact path="/main/*" element={<Dashboard/>}>
               <Route path="dashboard" element={<DashboardPage/>}/>
+              <Route path="about" element={<AboutUs/>}/>
+
               <Route path="surat/*" element={<SuratContainer/>}>
                 <Route path="list" element={<HalamanSurat2/>}/>
                 <Route path="edit"/>  
@@ -61,7 +65,7 @@ const Bruh = () => {
               </Route>
               <Route path="adduser" element={userData.access_levels ? userData.access_levels == "3" ? <AddUser/> : <Error/> : <Error/> }/>
             </Route>
-            <Route exact path="/login" element={<Login/>}/>
+            <Route exact path="/login" element={authorized ? <Navigate to="/main/dashboard"/> : <Login/>}/>
           </Routes>
         </Router>
     </>

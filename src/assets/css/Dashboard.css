@@ -6,12 +6,22 @@ body, html, .main{
     overflow: hidden;
 }
 .suratContainer{
+    animation: fadein2 300ms;
+
     font-family: 'Montserrat', sans-serif;
     border-top: #006496 5px solid;
     background-color: white;
     padding: 10px 20px;
     margin-bottom: 10px;
     /* box-shadow: rgba(0, 0, 0, 0.337) 0px 5px 10px; */
+}
+@keyframes fadein2 {
+    from { 
+        transform: scale(0.95);
+        opacity: 0; }
+    to   { 
+        transform: scale(1.0);
+        opacity: 1; }
 }
 .emptySpace{
     margin-bottom: 100px;
@@ -42,6 +52,9 @@ body, html, .main{
     font-size: 28px;
     margin: 20px 0px 15px 0px;
 }
+.smol{
+    height: 10vh;
+}
 .inputEntry{
     width: 30px;
     margin: 0px 5px;
@@ -69,6 +82,16 @@ body, html, .main{
     align-items: center;
     flex-direction: row;
     background-color: #00AEFD;
+    height: 50px;
+    justify-content: space-between;
+}
+.headerLand{
+    color: white;
+    display: flex;
+    padding: 0px 20px;
+    align-items: center;
+    flex-direction: row;
+    background-color: white;
     height: 50px;
     justify-content: space-between;
 }
@@ -146,6 +169,19 @@ body, html, .main{
     background-color: #4f6068;
 }
 .arch{
+    height: 50px;
+    width: auto;
+}
+.lands{
+    display: flex;
+    align-items: center;
+}
+.archLand{
+    height: 20px;
+    width: auto;
+}
+
+.archLand2{
     height: 50px;
     width: auto;
 }
@@ -256,6 +292,33 @@ body, html, .main{
     }
   }
   
+.oneOfAKind{
+    width: 40%;
+    color: white;
+    font-family: "Tauri";
+    font-size: 1.2vw;
+}
+.landHoho{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.hohoLand{
+    width: 30%;
+    animation: fadein 1s;
+
+}
+
+@keyframes fadein {
+    from { 
+        transform: scale(0.3);
+        opacity: 0; }
+    to   { 
+        transform: scale(1.0);
+        opacity: 1; }
+}
+
 .buttonLogin{
     
     user-select: none;
@@ -267,8 +330,37 @@ body, html, .main{
     color: #00AEFD;
     background-color: white;
 }
+.buttonLoginLand{
+    font-weight: 700;
+
+    user-select: none;
+    padding: 5px 20px;
+    border-radius: 5px;
+    border: white 1px solid;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 700;
+    color: white;
+    background-color: #00AEFD;
+}
+.buttonLoginLand p{
+    font-weight: 700;
+    font-family: "Tauri";
+    text-decoration: none;
+    
+}
+.buttonLoginLand:hover{
+
+    color: #00AEFD;
+    background-color: white;
+}
 .buttonLogin p {
     margin: 0px;
+}
+.titleScreen{
+    font-family: 'Tauri';
+    font-size: 2.5vw;
+    font-weight: bold;
+    color: white;
 }
 .buttonLogin:hover{
     background-color: #00AEFD;
@@ -297,12 +389,18 @@ body, html, .main{
 }
 .pagination {
     display: flex;
+    user-select: none;
 
 }
 .pagination div{
+    user-select: none;
+    cursor: pointer;
     font-family: 'Tauri', sans-serif;
     border: black 1px solid;
     padding: 5px 10px;
+}
+.pagination div:hover{
+    background-color: #007BFF;
 }
 .page{
     background-color: #006496;
@@ -933,7 +1031,54 @@ body, html, .main{
     align-items: center;
     justify-content: space-between;
 }
+.middleHaha{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.detailAbout{
+    animation: fadein2 1000ms;
+    
+    margin-top: 3vh;
+    width: 100vh;
+    font-family: "Raleway";
+}
+.idkMan {
+    font-weight: bold;
+    font-family: "Tauri";
+    font-size: xx-large;
+}
+.LeFinalDiv{
+    animation: fadein2 1500ms;
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+}
+.aboutChild{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    flex-grow: 1;
+    background: linear-gradient(89.84deg, #56CAFF 11.54%, #007BFF 104.7%);
+}
+.aboutBanner{
+    gap: 10px;
+    background: linear-gradient(89.84deg, #222D32 11.54%, #2E3B41 104.7%);
+    border-radius: 15px;
+    animation: fadein2 300ms;
+    font-family: "Tauri";
+    color: white;
+    display: flex;
+    padding: 2vw 2vw;
+    justify-content: space-between;
+    align-items: center;
 
+    
+}
+.aboutBanner h {
+    font-weight: bold;
+    font-size: 3vh;
+}
 .pointerCursor :hover{
     cursor: pointer;
 }
@@ -945,7 +1090,23 @@ body, html, .main{
     margin-right: 30px;
     color:rgba(255, 255, 255, 0.556);
 }
+.editButton2 {
+    font-weight: 700;
+    color: white;
+    font-size: x-large;
+    margin-right: 30px;
+    color:#222D32;
+}
 
+.vert{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.editButton2:hover{
+    color: #00AEFD;
+}
 .editButton:hover{
     color: white;
 }

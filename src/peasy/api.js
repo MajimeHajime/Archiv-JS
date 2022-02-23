@@ -10,7 +10,9 @@ export async function getRequest(url ,param){
     let req = {
         tipe: param.tipe,
         entry: param.entry,
-        access_level: param.access_level
+        access_level: param.access_level,
+        access: param.access,
+        where: param.where
     }
     console.log(req)
     let returning = {data: ""}
@@ -68,7 +70,7 @@ export async function loginApi(url ,param){
 
 
 export async function getDetail(url, param){
-    console.log("detail getting " + param)
+    console.log(url + param)
     let returning = {data: ""}
     const response = await fetch(url + param, {
         method: 'GET', // *GET, POST, PUT, DELETE, etc.

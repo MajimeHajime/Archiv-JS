@@ -32,8 +32,8 @@ const DashboardPage = () => {
 
     const setDashboard = useStoreActions((state) => state.setDashboard)
     const dashboard = useStoreActions((state) => state.dashboard)
-    const [masuk, setMasuk] = useState("")
-    const [keluar, setKeluar] = useState("")
+    const [masuk, setMasuk] = useState("0")
+    const [keluar, setKeluar] = useState("0")
     const [masukData, setMasukData] = useState("")
     const [keluarData, setKeluarData] = useState("")
     const [newData, setNewData] = useState([])
@@ -85,14 +85,14 @@ const DashboardPage = () => {
         {
             icon: faFileAlt,
             desc: "About us",
-            link: "Rekap Surat",
+            link: "About us",
             number: "",
-            go: "../rekap/list"
+            go: "../about"
         }
     ]
     return(
         <>
-            <div className="bannerNotification fuckPMargin">
+            <div className="bannerNotification fuckPMargin" onClick={() => (navigate("../about"))}>
                 <div className="board2 notific fuckPMargin">
                     <FontAwesomeIcon icon={faBookmark}/>
                     <p className="notif">Hello! Wellcome to Dashboard{userData.name ? ", " +userData.name + "!" : ""} | A R C H V</p>
@@ -129,25 +129,45 @@ const DashboardPage = () => {
                             data: masukData,
                             fill: false,
                             borderColor: 'rgb(75, 192, 192)',
-                            tension: 0.1
+                            tension: 0.4
                         },
                         {
                             label: 'keluar',
                             data: keluarData,
                             fill: false,
-                            borderColor: '#222D32',
-                            tension: 0.1
+                            borderColor: 'rgb(55, 193, 40)',
+                            tension: 0.4
                         },
                         ],
                     }}
                     />
+
                 </div>
                 <div className="suratContainer">
                     <h>
                         Papan pengumuman
                     </h>
                     <hr/>
-
+                    {
+                        retensi.map((data, index) => {
+                            console.log(data)
+                            return (
+                                <div className="board fuckPMargin" onClick={
+                                    e => {
+                                        console.log(data.id)
+                                        getDetail("http://127.0.0.1:8000/api/surats/", data.id).then(data=> {
+                                            console.log(data)
+                                            setDetail(data.data)}).then(() => navigate("../surat/detail"))
+                                    }} >
+                                    <p className="yello">(NILAI KEMBALI) </p>
+                                    <p>
+                                        {data.nama_surat} | {data.tipe == 2 ? "surat masuk" : "surat keluar" } 
+                                    </p>
+                                </div>
+                            )
+                            }
+                        )
+                    }
                     {
                         newData.map((data, index) => {
                             console.log(data)
@@ -168,20 +188,7 @@ const DashboardPage = () => {
                             }
                         )
                     }
-                    {
-                        retensi.map((data, index) => {
-                            console.log(data)
-                            return (
-                                <div className="board fuckPMargin">
-                                    <p className="yello">(RETENSI) </p>
-                                    <p>
-                                        {data.nama_surat} | {data.tipe == 2 ? "surat masuk" : "surat keluar" } 
-                                    </p>
-                                </div>
-                            )
-                            }
-                        )
-                    }
+                    
                 
                 </div>
             </div>

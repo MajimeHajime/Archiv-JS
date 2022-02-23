@@ -1,14 +1,28 @@
 import React, {useState} from "react";
 import '../assets/css/Dashboard.css';
-import {faDownload, faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
+import {faDownload, faEdit, faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useStoreState } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { truncateString } from "../modules/modulesCustom";
+import { useEffect } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+import { getDetail } from "../peasy/api";
 
 
 const DetailSurat = () => {
     const detail = useStoreState((state) => state.detail)
+    const setEditUser = useStoreActions((state) => state.setEditUser)
+    let navigate  = useNavigate();
+    const authorized = useStoreState((state) => state.authorized)
+    const userData = useStoreState((state) => state.userData)
+
     console.log(detail)
+
+    let today = new Date();
+    
+
+    let date = today.toISOString().split('T')[0] ;
+    console.log(detail.tanggal_retensi == date)
     return(
         <>
             <div className="detailContainer">
@@ -16,8 +30,22 @@ const DetailSurat = () => {
                     
                     
                 </div>
-                <div className="detailBackground">
+                <div className="suratContainer">
+                    <div className="vert">
                     <h className="titleDetail">Detail</h>
+                    {authorized ? userData.access_levels >=  1 ? detail.tanggal_retensi <= date ? 
+                    <div onClick={
+                                e => {
+                                    setEditUser(true)
+                                    navigate("../../upload");                             
+                                    setEditUser(true)
+
+                                }
+                            
+                        } className='pointerCursor editButton2'>
+                            <FontAwesomeIcon icon={faEdit}/>
+                        </div> : <></> : <></> : <></>}
+                        </div>
                     <div className="detailContainer2">          
                         <div className="disposisi">
                             <p>{detail.disposisi ? detail.disposisi : ""}</p>
@@ -34,14 +62,16 @@ const DetailSurat = () => {
                                     </div>
                                 </div>
                                 <div className="detailButtonContainer">
-                                    <div className="detailButton downloadButton">
+                                    <div className="detailButton downloadButton" onClick={() => {
+                                        window.location.href = "http://127.0.0.1:8000/api/download/" + detail.id;
+                                    }}>
                                         <FontAwesomeIcon icon={faDownload}/>
                                         <p>Download</p>
                                     </div>
-                                    <div className="detailButton downloadButton">
+                                    {/* <div className="detailButton downloadButton">
                                         <FontAwesomeIcon icon={faPrint}/>
                                         <p>Print</p>
-                                    </div>    
+                                    </div>     */}
                                 </div>
                             </div>
                             <div className="informationDetail">
@@ -54,7 +84,7 @@ const DetailSurat = () => {
                                             detail.access_level == 2 ? "Rahasia" :
                                             detail.access_level == 1 ? "Terbatas" :
                                             detail.access_level == 0 ? "Publik" :
-                                         "" : ""}
+                                         "Publik" : "Publik"}
                                     </p>
                                 </div>
                                 <div className="infoStyle">

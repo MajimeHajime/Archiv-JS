@@ -36,7 +36,7 @@ const UserButton = () => {
                     </div>
                 </div>
                 <div className='userButtonsContainer' onClick={()=>{
-                    navigate("/login")
+                    navigate("/")
                     setAuthorized(false)
                     setUserData({})
                 }}>

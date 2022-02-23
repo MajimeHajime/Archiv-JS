@@ -25,10 +25,12 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
     const dataRekap = useStoreState((state) => state.dataRekap)
     const setDataRekap = useStoreActions((state) => state.setdataRekap)
     const [init, setInit] = useState(true)
+    const [where, setWhere] = useState("")
 
     const setEditUser = useStoreActions((state) => state.setEditUser)
 
     useEffect(() => {
+        
         init ?
         
         getRequest( type == "surat" ? 'http://127.0.0.1:8000/api/surats/' : type == "user" ? 'http://127.0.0.1:8000/api/user-list/' : 'http://127.0.0.1:8000/api/rekap/', {
@@ -36,7 +38,9 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
             entry: 4,
             access_level: userData.access_levels ? userData.access_levels : "0"
         }).then(
+
             data => {
+                setKm('masuk')
                 console.log(data.data)
                 type ==  "surat" ? setSataSuratMasuk(data.data) : type == "user" ? setDataUser(data.data) :setDataRekap(data.data);
                 setDataLoading(false);
@@ -77,8 +81,21 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                 
             </div>
             {type == "surat" ? <div className=" search ">
-                <input className="" type="text"></input><br/>
-                <div className="fuckPMargin searchButton">
+                <input className="" type="text" onChange={(e) => {setWhere(e.target.value)}}></input><br/>
+                <div className="fuckPMargin searchButton"
+                    onClick={() => {
+                        setDataLoading(true)
+                        getRequest('http://127.0.0.1:8000/api/surats/search/', {
+                            tipe: km == "masuk" ? 2 : 1,
+                            where: where,
+                            access: userData ? userData.access_levels : 0
+                        }).then(
+                            data => {
+                                setSataSuratMasuk(data);
+                                setDataLoading(false);}
+                        )
+                        }}
+                >
                     <p>
                         Search
                     </p>
@@ -221,6 +238,7 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                             onClick={() =>{
                             setDataLoading(true)
                             getRequest(data.url, {
+                                access_level: userData.access_levels ? userData.access_levels : "0",
                                 tipe: km == "masuk" ? 2 : 1,
                                 entry: entry
                             }).then(
@@ -230,7 +248,9 @@ const HalamanSurat= ({dataSurat, halamanInfo, collumn, type}) =>{
                                     setDataLoading(false);}
                             )
                             }}>
-                                {data.label}
+                                {data.label == "Next &raquo;" ? "Next" :
+                                data.label == "&laquo; Previous" ? "Previous" :
+                                data.label}
 
                         </div> : <></>)
                     }) : <></>}
